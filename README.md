@@ -39,12 +39,12 @@ A comprehensive, community-driven performance customization for the Traktor X1MK
 For complete setup guide, backup/restore options, and detailed instructions, see:
 **https://github.com/lsmith77/traktor-kontrol-qml/blob/main/08_SHARING_CHANGES.md**
 
-Quick install using the `install-traktor-mod` script:
+Quick install using the `traktor-mod` script:
 
 ```bash
 git clone https://github.com/lsmith77/X1MK3_PerformanceMod.git
 cd X1MK3_PerformanceMod
-install-traktor-mod
+traktor-mod
 ```
 
 ---
