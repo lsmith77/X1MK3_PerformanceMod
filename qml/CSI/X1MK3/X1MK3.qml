@@ -28,7 +28,8 @@ Mapping
     // deviceSetup.resetOverlayOvermapping();
   }
 
-  KontrolScreen { name: "screen"; side: ScreenSide.Left; propertiesPath: mapping.propertiesPath; flavor: ScreenFlavor.X1MK3_Mode }
+  // KontrolScreen { name: "screen"; side: ScreenSide.Left; propertiesPath: mapping.propertiesPath; flavor: ScreenFlavor.X1MK3_Mode }
+  KontrolScreen { name: "screen"; propertiesPath: mapping.propertiesPath; flavor: ScreenFlavor.X1MK3_Mode }
   Wire { from: "screen.output"; to: "surface.display.mode" }
 
   // Custom Settings
@@ -373,8 +374,14 @@ Mapping
   }
 
 
+  // AppProperty used as toggles and modifier conditions instead of their original functions. Decks A and B cannot be used as Remix Decks when these properties are used.
   AppProperty { id: remixPageDeckA; path: "app.traktor.decks.1.remix.page"; }
   AppProperty { id: remixPageDeckB; path: "app.traktor.decks.2.remix.page"; }
+  AppProperty { id: alternateEncoderSetupToggleProp; path: "app.traktor.decks.2.remix.players.4.sequencer.steps.14"; }
+  // AppProperty { id: cueBlinkerToggleProp; path: "app.traktor.decks.2.remix.players." + module.deckIdx + ".sequencer.steps.15"; }
+  // AppProperty { id: playBlinkerToggleProp; path: "app.traktor.decks.2.remix.players." + module.deckIdx + ".sequencer.steps.16"; }
+  
+  // ...
   
   AppProperty { id: clockBPMProp; path: "app.traktor.masterclock.tempo" }
   MappingPropertyDescriptor {
@@ -429,6 +436,26 @@ Mapping
     // }
   // }
 
+  MappingPropertyDescriptor { id: customFxUnitDryWetStored1; path: "mapping.settings.custom_fx_unit_dry_wet_stored_1"; type: MappingPropertyDescriptor.Float; value: 0.5 }
+  MappingPropertyDescriptor { id: customFxUnitDryWetStored2; path: "mapping.settings.custom_fx_unit_dry_wet_stored_2"; type: MappingPropertyDescriptor.Float; value: 0.5 }
+  MappingPropertyDescriptor { id: customFxUnitDryWetStored3; path: "mapping.settings.custom_fx_unit_dry_wet_stored_3"; type: MappingPropertyDescriptor.Float; value: 0.5 }
+  MappingPropertyDescriptor { id: customFxUnitDryWetStored4; path: "mapping.settings.custom_fx_unit_dry_wet_stored_4"; type: MappingPropertyDescriptor.Float; value: 0.5 }
+  
+  AppProperty { id: fxUnit1Store; path: "app.traktor.fx.1.store"; onValueChanged: if (fxUnit1Type.value == FxType.Group) customFxUnitDryWetStored1.value = fxUnit1DryWet.value }
+  AppProperty { id: fxUnit2Store; path: "app.traktor.fx.2.store"; onValueChanged: if (fxUnit2Type.value == FxType.Group) customFxUnitDryWetStored2.value = fxUnit2DryWet.value }
+  AppProperty { id: fxUnit3Store; path: "app.traktor.fx.3.store"; onValueChanged: if (fxUnit3Type.value == FxType.Group) customFxUnitDryWetStored3.value = fxUnit3DryWet.value }
+  AppProperty { id: fxUnit4Store; path: "app.traktor.fx.4.store"; onValueChanged: if (fxUnit4Type.value == FxType.Group) customFxUnitDryWetStored4.value = fxUnit4DryWet.value }
+
+  AppProperty { id: fxUnit1Type; path: "app.traktor.fx.1.type"; onValueChanged: if (value == FxType.Group) fxUnit1DryWet.value = customFxUnitDryWetStored1.value }
+  AppProperty { id: fxUnit2Type; path: "app.traktor.fx.2.type"; onValueChanged: if (value == FxType.Group) fxUnit2DryWet.value = customFxUnitDryWetStored2.value }
+  AppProperty { id: fxUnit3Type; path: "app.traktor.fx.3.type"; onValueChanged: if (value == FxType.Group) fxUnit3DryWet.value = customFxUnitDryWetStored3.value }
+  AppProperty { id: fxUnit4Type; path: "app.traktor.fx.4.type"; onValueChanged: if (value == FxType.Group) fxUnit4DryWet.value = customFxUnitDryWetStored4.value }
+  
+  AppProperty { id: fxUnit1DryWet; path: "app.traktor.fx.1.dry_wet"; onValueChanged: if (fxUnit1Type.value == FxType.Group) customFxUnitDryWetStored1.value = fxUnit1DryWet.value }
+  AppProperty { id: fxUnit2DryWet; path: "app.traktor.fx.2.dry_wet"; onValueChanged: if (fxUnit2Type.value == FxType.Group) customFxUnitDryWetStored2.value = fxUnit2DryWet.value }
+  AppProperty { id: fxUnit3DryWet; path: "app.traktor.fx.3.dry_wet"; onValueChanged: if (fxUnit3Type.value == FxType.Group) customFxUnitDryWetStored3.value = fxUnit3DryWet.value }
+  AppProperty { id: fxUnit4DryWet; path: "app.traktor.fx.4.dry_wet"; onValueChanged: if (fxUnit4Type.value == FxType.Group) customFxUnitDryWetStored4.value = fxUnit4DryWet.value }
+  
   AppProperty { id: fxMode; path: "app.traktor.fx.4fx_units"; onValueChanged: fxModeChanged() }
 
   function fxModeChanged() {
@@ -524,6 +551,7 @@ Mapping
   property alias shift: shiftProp
   MappingPropertyDescriptor { id: shiftProp; path: mapping.propertiesPath + ".shift"; type: MappingPropertyDescriptor.Boolean; value: false }
   // Wire { from: "surface.shift";  to: DirectPropertyAdapter { path: mapping.propertiesPath + ".shift"  } }
+  // Wire { from: "surface.shift";  to: DirectPropertyAdapter { path: mapping.propertiesPath + ".shift"; output: false  } }
 
   Browser { name: "browser" }
 
@@ -719,7 +747,9 @@ Mapping
 
   WiresGroup {
     // enabled: (deviceSetup.state == DeviceSetupState.assigned) && maximizeBrowserWhenBrowsingProp.value
+    // enabled: (deviceSetup.state == DeviceSetupState.assigned) && maximizeBrowserWhenBrowsingProp.value && !customBrowserModeProp.value
     enabled: (deviceSetup.state == DeviceSetupState.assigned) && maximizeBrowserWhenBrowsingProp.value && !customBrowserModeProp.value
+      && (!alternateEncoderSetupToggleProp.value || (alternateEncoderSetupToggleProp.value && (fxSection.layer == FXSectionLayer.mixer ) ) )
 
     Wire {
       from: Or

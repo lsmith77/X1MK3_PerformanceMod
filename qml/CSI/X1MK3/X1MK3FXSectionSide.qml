@@ -184,10 +184,10 @@ Module
   FxUnit { name: "fx_unit_3"; channel: 3 }
   FxUnit { name: "fx_unit_4"; channel: 4 }
 
-  AppProperty { id: fxUnit1Type; path: "app.traktor.fx.1.type" }
-  AppProperty { id: fxUnit2Type; path: "app.traktor.fx.2.type" }
-  AppProperty { id: fxUnit3Type; path: "app.traktor.fx.3.type" }
-  AppProperty { id: fxUnit4Type; path: "app.traktor.fx.4.type" }
+  // AppProperty { id: fxUnit1Type; path: "app.traktor.fx.1.type" }
+  // AppProperty { id: fxUnit2Type; path: "app.traktor.fx.2.type" }
+  // AppProperty { id: fxUnit3Type; path: "app.traktor.fx.3.type" }
+  // AppProperty { id: fxUnit4Type; path: "app.traktor.fx.4.type" }
 
   WiresGroup
   {

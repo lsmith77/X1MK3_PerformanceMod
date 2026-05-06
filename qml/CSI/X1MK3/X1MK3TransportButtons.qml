@@ -159,8 +159,9 @@ Module
     }
   }
   
-  AppProperty { id: cueBlinkerToggleProp; path: "app.traktor.decks.1.remix.players." + module.deckIdx + ".sequencer.steps.1"; }
-  AppProperty { id: playBlinkerToggleProp; path: "app.traktor.decks.1.remix.players." + module.deckIdx + ".sequencer.steps.2"; }
+  // AppProperty used as toggles and modifier conditions instead of their original functions. Decks A and B cannot be used as Remix Decks when these properties are used.
+  AppProperty { id: cueBlinkerToggleProp; path: "app.traktor.decks.2.remix.players." + module.deckIdx + ".sequencer.steps.15"; }
+  AppProperty { id: playBlinkerToggleProp; path: "app.traktor.decks.2.remix.players." + module.deckIdx + ".sequencer.steps.16"; }
 // Cue Blinker and Play Blinker
 
   Timer {

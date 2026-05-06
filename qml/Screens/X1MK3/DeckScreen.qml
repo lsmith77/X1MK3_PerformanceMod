@@ -1,16 +1,17 @@
 import CSI 1.0
 import QtQuick 2.0
 
+import "../Widgets" as Widgets
 import "../Defines" as Defines
 import "../../CSI/X1MK3/Defines"
-import "Scripts/DisplayHelpers.js" as DisplayHelpers
+// import "Scripts/DisplayHelpers.js" as DisplayHelpers
 
 Item {
   id: screen
 
-  property int side: ScreenSide.Left;
+  // property int side: ScreenSide.Left;
 
-  property string settingsPath: ""
+  // property string settingsPath: ""
   property string propertiesPath: ""
 
   width:  128
@@ -241,7 +242,7 @@ Item {
         }
 
         // The Text element that displays the "cut" track title
-        ThickText {
+        Widgets.ThickText {
             visible: !shift
             
             font.family: monospace.name  // Sets the font to the loaded monospace font
@@ -308,8 +309,8 @@ Item {
             }
         }
 
-        // ThickText {
-        ThinText {
+        // Widgets.ThickText {
+        Widgets.ThinText {
             visible: !shift && !endTimer2.running
             x: 0
             
@@ -326,7 +327,7 @@ Item {
             }
         }
         
-        // ThickText {
+        // Widgets.ThickText {
             // visible: !shift
 
             // anchors {
@@ -340,7 +341,7 @@ Item {
         // }
 
         // Remaining/Elapsed Time
-        ThinText {
+        Widgets.ThinText {
             visible: (deckDisplayMainInfo != loopSizeInfo) && !shift && !customBeatCounterEngaged && !isRemixDeck
 
             anchors {
@@ -359,7 +360,7 @@ Item {
         }
 
         // Remaining/Elapsed [Phrases].[Bars].[Beats]
-        ThinText {
+        Widgets.ThinText {
             visible: (deckDisplayMainInfo != loopSizeInfo) && !shift && customBeatCounterEngaged && !isRemixDeck
 
             anchors {
@@ -379,7 +380,7 @@ Item {
         }
 
         // Remix Deck Beat Counter
-        ThinText {
+        Widgets.ThinText {
             visible: (deckDisplayMainInfo != loopSizeInfo) && !shift && isRemixDeck
 
             anchors {
@@ -399,7 +400,7 @@ Item {
         }
 
         // [SHIFT] Remaining time
-        ThinText {
+        Widgets.ThinText {
             visible: shift && customBeatCounterEngaged && !isRemixDeck && (customBrowserModeProp.value || (!customBrowserModeProp.value && (loopShiftAction == key_adjust) ) )
 
             anchors {
@@ -416,7 +417,7 @@ Item {
         }
 
         // Loop headline
-        ThickText {
+        Widgets.ThickText {
             // visible: shift && loopShiftAction == beatjump_loop
             // visible: false
             visible: shift && !customBrowserModeProp.value && (loopShiftAction == beatjump_loop)
@@ -447,7 +448,7 @@ Item {
           height: 35
           color: loopActiveProp.value ? "white" : "black"
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent 
               font.pixelSize: 48
               font.capitalization: Font.AllUppercase
@@ -459,7 +460,7 @@ Item {
         }
 
         // Capture Source / Quantization
-        ThickText {
+        Widgets.ThickText {
             visible: shift && isRemixDeck && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) )
 
             anchors {
@@ -487,7 +488,7 @@ Item {
           width: 32
           height: 19
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent
               anchors.rightMargin: 7
               font.pixelSize: 24
@@ -515,7 +516,7 @@ Item {
           width: 32
           height: 19
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent
               anchors.rightMargin: 7
               font.pixelSize: 24
@@ -542,7 +543,7 @@ Item {
           height: 35
           color: "black"
 
-          ThinText {
+          Widgets.ThinText {
             anchors.fill: parent 
             // font.pixelSize: 48
             font.pixelSize: 24
@@ -570,7 +571,7 @@ Item {
           height: 35
           color: remixQuantActive ? "white" : "black"
 
-          ThinText {
+          Widgets.ThinText {
             anchors.fill: parent 
             // font.pixelSize: 48
             font.pixelSize: 40
@@ -600,7 +601,7 @@ Item {
           height: 35
           color: "black"
 
-          ThinText {
+          Widgets.ThinText {
             anchors.fill: parent 
             font.pixelSize: 48
             horizontalAlignment: Text.AlignHCenter
@@ -628,7 +629,7 @@ Item {
           width: 32
           height: 19
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent
               anchors.rightMargin: 7
               font.pixelSize: 24
@@ -655,7 +656,7 @@ Item {
           width: 32
           height: 19 // 18
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent
               anchors.rightMargin: 7
               font.pixelSize: 24
@@ -682,7 +683,7 @@ Item {
           width: 32
           height: 19 // 18
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent
               anchors.rightMargin: 7
               font.pixelSize: 24
@@ -703,7 +704,7 @@ Item {
         anchors.fill: parent
 
         // Loop headline
-        ThickText {
+        Widgets.ThickText {
             anchors {
                 top: parent.top
                 left: parent.left
@@ -726,7 +727,7 @@ Item {
           height: 35
           color: loopActiveProp.value ? "white" : "black"
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent 
               font.pixelSize: 48
               font.capitalization: Font.AllUppercase
@@ -756,7 +757,7 @@ Item {
           height: 35
           color: "black"
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent 
               font.pixelSize: 48
               font.capitalization: Font.AllUppercase
@@ -774,7 +775,7 @@ Item {
         anchors.fill: parent
 
         // Browse Headline
-          ThinText {
+          Widgets.ThinText {
             anchors {
                 top: parent.top
                 left: parent.left
@@ -799,7 +800,7 @@ Item {
           height: 35
           color: "black"
 
-          ThinText {
+          Widgets.ThinText {
               anchors.fill: parent 
               font.pixelSize: 18
               font.capitalization: Font.AllUppercase
@@ -881,7 +882,7 @@ Item {
       visible: (deviceSetupState == DeviceSetupState.assigned) && (deckTypeProp.value == DeckType.Live)
       anchors.fill: parent
 
-      ThinText {
+      Widgets.ThinText {
           anchors.fill: parent
           text: "LIVE INPUT"
           horizontalAlignment: Text.AlignHCenter
@@ -907,7 +908,7 @@ Item {
         width: 44
         height: 44
 
-        ThinText {
+        Widgets.ThinText {
           anchors {
             top: parent.top
             left: parent.left

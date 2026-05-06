@@ -77,6 +77,10 @@ Module
   AppProperty { id: loadPrimary; path: "app.traktor.decks." + module.deckIdx + ".load.selected" }
   AppProperty { id: loadSecondary; path: "app.traktor.decks." + module.deckIdx + ".load_secondary.selected" }
   
+  property bool legacyEncoderActive: !customBrowserModeProp.value && !alternateEncoderSetupToggleProp.value
+  property bool alternateEncoderActive: !customBrowserModeProp.value && alternateEncoderSetupToggleProp.value
+  property bool customBrowserModeActive: customBrowserModeProp.value && !browserModeProp.value
+  property bool browserModeActive: customBrowserModeProp.value && browserModeProp.value
 
   // Mixer Properties
   AppProperty { id: channelEqHighProp; path: "app.traktor.mixer.channels." + module.deckIdx + ".eq.high" }
@@ -927,6 +931,8 @@ Module
 
   AppProperty { id: activeCueTypeProp; path: "app.traktor.decks." + module.deckIdx + ".track.cue.active.type" }
   AppProperty { id: loopActiveProp; path: "app.traktor.decks." + module.deckIdx + ".loop.active" }
+  AppProperty { id: moveSizeProp; path: "app.traktor.decks." + module.deckIdx + ".move.size" }
+  AppProperty { id: moveModeProp; path: "app.traktor.decks." + module.deckIdx + ".move.mode" }
 
   AppProperty { id: deckIsLoaded; path: "app.traktor.decks." + module.deckIdx + ".is_loaded" }
 
@@ -1079,32 +1085,6 @@ Module
 
     Wire { from: SetPropertyAdapter{ path: "app.traktor.decks." + module.deckIdx + ".loop.active"; value: 1; input: false; color: Color.White } to: "%surface%.loop.indicator" }
 
-    // Wire { from: "%surface%.loop"; to: "loop.autoloop"; enabled: !module.shift && !module.syncModifier }
-    Wire {
-      enabled: !module.shift && !module.syncModifier && !browserModeProp.value
-      from: "%surface%.loop"; to: "loop.autoloop";
-    }
-
-    WiresGroup
-    {
-      // enabled: module.shift
-      enabled: module.shift && !browserModeProp.value && customBrowserModeProp.value && (deckTypeProp.value != DeckType.Remix)
-
-      // Wire { from: "%surface%.loop"; to: "loop.move"; enabled: loopShiftAction == beatjump_loop }
-      // Wire { from: "%surface%.loop"; to: "key_control.coarse"; enabled: loopShiftAction == key_adjust }
-      Wire { from: "%surface%.loop"; to: "key_control.coarse"; }
-    }
-
-    WiresGroup
-    {
-      // enabled: module.shift
-      enabled: module.shift && !browserModeProp.value && !customBrowserModeProp.value
-
-      Wire { from: "%surface%.loop"; to: "loop.move"; enabled: loopShiftAction == beatjump_loop }
-      // Wire { from: "%surface%.loop"; to: "key_control.coarse"; enabled: (loopShiftAction == key_adjust) }
-      Wire { from: "%surface%.loop"; to: "key_control.coarse"; enabled: (loopShiftAction == key_adjust) && (deckTypeProp.value != DeckType.Remix) }
-    }
-
     WiresGroup
     {
       enabled: (!module.shift && (hotcue12PushAction == HotcueAction.loop_in_out)) || (module.shift && (hotcue12ShiftPushAction == HotcueAction.loop_in_out))
@@ -1120,7 +1100,37 @@ Module
       Wire { from: "%surface%.hotcues.3"; to: "loop.in" }
       Wire { from: "%surface%.hotcues.4"; to: "loop.out" }
     }
+      
+    WiresGroup
+    {
+      enabled: (!module.shift && (hotcue12PushAction == HotcueAction.loop_in_out)) || (module.shift && (hotcue12ShiftPushAction == HotcueAction.loop_in_out))
+
+      Wire { from: "%surface%.hotcues.1"; to: "loop.in" }
+      Wire { from: "%surface%.hotcues.2"; to: "loop.out" }
+    }
+
+    WiresGroup
+    {
+      enabled: (!module.shift && (hotcue34PushAction == HotcueAction.loop_in_out)) || (module.shift && (hotcue34ShiftPushAction == HotcueAction.loop_in_out))
+
+      Wire { from: "%surface%.hotcues.3"; to: "loop.in" }
+      Wire { from: "%surface%.hotcues.4"; to: "loop.out" }
+    }
+
+    // Wire { from: "%surface%.loop"; to: "loop.autoloop"; enabled: !module.shift && !module.syncModifier }
+
+    // WiresGroup
+    // {
+      // enabled: module.shift
+      
+      // Wire { from: "%surface%.loop"; to: "loop.move"; enabled: loopShiftAction == beatjump_loop }
+      // Wire { from: "%surface%.loop"; to: "key_control.coarse"; enabled: loopShiftAction == key_adjust }
+      
+    // }
+    
   }
+  
+  
   WiresGroup
   {
     enabled: module.active
@@ -1151,70 +1161,76 @@ Module
 
   WiresGroup
   {
-    // enabled: module.active && !module.shift && module.syncModifier
-    enabled: module.active && !module.shift && module.syncModifier  && !browserModeProp.value
+    enabled: module.active
+    
+    WiresGroup
+    {
+      // enabled: !module.shift && module.syncModifier && !browserModeProp.value
+      enabled: !module.shift && module.syncModifier && !module.browserModeActive
 
-    Wire {
-      from: "%surface%.loop.turn"
-      to: EncoderScriptAdapter {
-        onTick: {
-          module.resetTempoEngaged = false;
-        }
-        onIncrement: {
-          if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value + (module.coarseTempoStep ? 1 : 0.01)
-          else bpmProp.value = bpmProp.value + (module.coarseTempoStep ? 1 : 0.01)
-        }
-        onDecrement: {
-          if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value - (module.coarseTempoStep ? 1 : 0.01)
-          else bpmProp.value = bpmProp.value - (module.coarseTempoStep ? 1 : 0.01)
-        }
-      }
-    }
-
-    Wire {
-      from: "%surface%.loop.push"
-      to: ButtonScriptAdapter {
-        onPress: {
-          module.coarseTempoStep = true;
-          module.resetTempoEngaged = true;
-        }
-        onRelease: {
-          module.coarseTempoStep = false;
-          if (module.resetTempoEngaged)
-          {
-            // Reset the tempo
-            if (module.isSlaveDeck) {
-              clockBPMProp.value = trackBaseBPMProp.value;
-            }
-            else tempoAdjProp.value = 0.0
+      Wire {
+        from: "%surface%.loop.turn"
+        to: EncoderScriptAdapter {
+          onTick: {
+            module.resetTempoEngaged = false;
+          }
+          onIncrement: {
+            if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value + (module.coarseTempoStep ? 1 : 0.01)
+            else bpmProp.value = bpmProp.value + (module.coarseTempoStep ? 1 : 0.01)
+          }
+          onDecrement: {
+            if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value - (module.coarseTempoStep ? 1 : 0.01)
+            else bpmProp.value = bpmProp.value - (module.coarseTempoStep ? 1 : 0.01)
           }
         }
       }
-    }
-  }
 
-  WiresGroup
-  {
-    enabled: module.active && module.shift && (deckTypeProp.value == DeckType.Remix) && ((customBrowserModeProp.value && !browserModeProp.value.value) || (!customBrowserModeProp.value && (loopShiftAction == key_adjust)))
-
-    Wire { from: "%surface%.loop.push";  to: HoldPropertyAdapter  { path: propertiesPath + "." + deckIdx + ".quantize_engaged"; value: true } }
-    
-    Wire { from: "%surface%.loop.turn";  to: RelativePropertyAdapter { path:"app.traktor.decks." + module.deckIdx + ".remix.quant_index"; mode: RelativeMode.Stepped } enabled: quantizeEngagedProp.value }
-
-    Wire { from: "%surface%.loop.turn";  to: "remix.capture_source"; enabled: !quantizeEngagedProp.value }
-    
-    Wire {
-      enabled: quantizeEngagedProp.value
-      from: "%surface%.loop.turn"
-      to: EncoderScriptAdapter {
-        onTick: {
-          // module.resetQuantizeEngaged = false;
-          remixQuantProp.value = true;
+      Wire {
+        from: "%surface%.loop.push"
+        to: ButtonScriptAdapter {
+          onPress: {
+            module.coarseTempoStep = true;
+            module.resetTempoEngaged = true;
+          }
+          onRelease: {
+            module.coarseTempoStep = false;
+            if (module.resetTempoEngaged)
+            {
+              // Reset the tempo
+              if (module.isSlaveDeck) {
+                clockBPMProp.value = trackBaseBPMProp.value;
+              }
+              else tempoAdjProp.value = 0.0
+            }
+          }
         }
       }
+      
     }
-    
-    Wire { from: "%surface%.loop.push";  to: TogglePropertyAdapter  { path: "app.traktor.decks." + module.deckIdx + ".remix.quant" } }
+
+    WiresGroup
+    {
+      // enabled: module.shift && (deckTypeProp.value == DeckType.Remix) && ((customBrowserModeProp.value && !browserModeProp.value) || (!customBrowserModeProp.value && (loopShiftAction == key_adjust)))
+      enabled: module.shift && (deckTypeProp.value == DeckType.Remix) && ( (module.customBrowserModeActive) || (!module.customBrowserModeActive && (loopShiftAction == key_adjust) ) )
+
+      Wire { from: "%surface%.loop.push";  to: HoldPropertyAdapter  { path: propertiesPath + "." + deckIdx + ".quantize_engaged"; value: true } }      
+      Wire { from: "%surface%.loop.push";  to: TogglePropertyAdapter  { path: "app.traktor.decks." + module.deckIdx + ".remix.quant" } }
+      Wire { from: "%surface%.loop.turn";  to: RelativePropertyAdapter { path:"app.traktor.decks." + module.deckIdx + ".remix.quant_index"; mode: RelativeMode.Stepped } enabled: quantizeEngagedProp.value }
+      Wire { from: "%surface%.loop.turn";  to: "remix.capture_source"; enabled: !quantizeEngagedProp.value }
+      
+      Wire {
+        enabled: quantizeEngagedProp.value
+        from: "%surface%.loop.turn"
+        to: EncoderScriptAdapter {
+          onTick: {
+            // module.resetQuantizeEngaged = false;
+            remixQuantProp.value = true;
+          }
+        }
+      }
+      
+    }
+  
   }
 
   // Absolute/Relative
@@ -1620,24 +1636,7 @@ Module
 
     WiresGroup
     {
-      enabled: !browserModeProp.value && customBrowserModeProp.value
-
-      Wire { enabled: !module.shift; from: "%surface%.browse"; to: "loop.move" }
-      // Wire { enabled: module.shift; from: "%surface%.browse"; to: "loop.one_beat_move"; }
-      WiresGroup {
-        enabled:  module.shift
-        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 6 } } // Move Size = 1 Beat
-        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Move
-        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Loop
-        Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
-        Wire { from: "%surface%.browse.push";   to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".cup"; output: false } }
-        Wire { from: "%surface%.browse.push";   to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active"; value: true; output: false } enabled: ( activeCueTypeProp.value == 5 ) }
-      }
-    }
-
-    WiresGroup
-    {
-      enabled: !browserModeProp.value && !customBrowserModeProp.value
+      enabled: module.legacyEncoderActive
 
       WiresGroup
       {
@@ -1645,6 +1644,222 @@ Module
         
         Wire { from: "%surface%.browse.push"; to: "LoadButton" }
         Wire { from: "%surface%.browse"; to: "browser.list_navigation" }
+      }
+      
+      WiresGroup
+      {
+        enabled: !module.shift && !module.syncModifier
+        
+        Wire { from: "%surface%.loop"; to: "loop.autoloop"; }
+      
+      }
+
+      WiresGroup
+      {
+        enabled: module.shift
+
+        Wire
+        {
+          from: "%surface%.browse.turn"
+          to: "browser.favorites_navigation.turn"
+          enabled: browseShiftAction == BrowseEncoderAction.browse_favorites
+        }
+
+        Wire
+        {
+          from: "%surface%.browse"
+          to: "browser.tree_navigation"
+          enabled: browseShiftAction == BrowseEncoderAction.browse_tree
+        }
+
+        Wire
+        {
+          from: "%surface%.browse.push"
+          to: "browser.tree_navigation.push"
+          enabled: browseShiftPushAction == BrowseEncoderAction.browse_expand_tree
+        }
+
+        Wire
+        {
+          from: "%surface%.browse.push"
+          to: "browser.full_screen"
+          enabled: browseShiftPushAction == BrowseEncoderAction.browse_toggle_full_screen
+        }
+      }
+
+      WiresGroup
+      {
+        enabled: module.shift
+
+        Wire { from: "%surface%.loop"; to: "loop.move"; enabled: loopShiftAction == beatjump_loop }
+        Wire { from: "%surface%.loop"; to: "key_control.coarse"; enabled: (loopShiftAction == key_adjust) && (deckTypeProp.value != DeckType.Remix) }
+      }
+      
+
+    }
+
+    WiresGroup
+    {
+      enabled: module.customBrowserModeActive
+
+      Wire {
+        from: "surface.shift"
+        to: ButtonScriptAdapter {
+          onPress: {
+            moveSizeProp.value = 6; // Move Size = 1 Beat
+            if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+              moveModeProp.value = 1;  // Move Loop
+            }
+            else moveModeProp.value = 0;  // Beatjump
+          }
+          onRelease: {
+            moveSizeProp.value = 12; // Move Size = Loop
+            if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+              moveModeProp.value = 1;  // Move Loop
+            }
+            else moveModeProp.value = 0;  // Beatjump
+          }
+        }
+      }
+      
+      WiresGroup
+      {
+        enabled: !module.shift
+        
+        Wire { from: "%surface%.browse"; to: "loop.move"; }
+      
+      }
+      
+      WiresGroup
+      {
+        enabled: !module.shift && !module.syncModifier
+        
+        Wire { from: "%surface%.loop"; to: "loop.autoloop"; }
+      
+      }
+
+      WiresGroup {
+        enabled:  module.shift
+        
+        // Wire { from: "%surface%.browse"; to: "loop.one_beat_move"; }
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 6 } } // Move Size = 1 Beat
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Beatjump
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Loop
+        Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+        Wire { from: "%surface%.browse.push"; to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".cup"; output: false } }
+        Wire { from: "%surface%.browse.push"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active"; value: true; output: false } enabled: ( activeCueTypeProp.value == 5 ) }
+      }
+      
+      WiresGroup
+      {
+        enabled: module.shift && (deckTypeProp.value != DeckType.Remix)
+        
+        Wire { from: "%surface%.loop"; to: "key_control.coarse"; }
+      
+      }
+      
+    }
+
+    WiresGroup
+    {
+      enabled: module.browserModeActive
+
+      Wire { from: "%surface%.browse.push"; to: TriggerPropertyAdapter { path: "app.traktor.browser.preview_player.unload" } }
+      Wire { from: "%surface%.browse.push"; to: "LoadButton" }
+    }
+
+    WiresGroup
+    {
+      enabled: module.alternateEncoderActive && (fxSectionLayer != FXSectionLayer.mixer)
+
+      Wire {
+        from: "surface.shift"
+        to: ButtonScriptAdapter {
+          onPress: {
+            moveSizeProp.value = 6; // Move Size = 1 Beat
+            moveModeProp.value = 1;  // Move Loop
+          }
+          onRelease: {
+            moveSizeProp.value = 12; // Move Size = Loop
+            moveModeProp.value = 1;  // Move Loop
+          }
+        }
+      }
+
+      WiresGroup
+      {
+        enabled: !module.shift
+        
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 12 } } // Move Size = Loop Size
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } } // Move Loop
+        Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+        Wire { from: "%surface%.browse.push"; to: TogglePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active" } }
+      }
+        
+      WiresGroup
+      {
+        enabled: !module.shift && !module.syncModifier
+        
+        Wire { from: "%surface%.loop"; to: "loop.autoloop"; }
+      
+      }
+
+      WiresGroup
+      {
+        enabled:  module.shift
+        
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 6 } } // Move Size = 1 Beat
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } } // Move Loop
+        Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+        Wire { from: "%surface%.browse.push"; to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".cup"; output: false } }
+        Wire { from: "%surface%.browse.push"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active"; value: true; output: false } enabled: ( activeCueTypeProp.value == 5 ) }
+      }
+        
+      WiresGroup
+      {
+        enabled:  module.shift
+        
+        Wire { from: "%surface%.loop"; to: "loop.move"; enabled: loopShiftAction == beatjump_loop }
+        Wire { from: "%surface%.loop"; to: "key_control.coarse"; enabled: (loopShiftAction == key_adjust) && (deckTypeProp.value != DeckType.Remix) }
+      }
+        
+    }
+    
+    WiresGroup
+    {
+      enabled: module.alternateEncoderActive && (fxSectionLayer == FXSectionLayer.mixer)
+
+      Wire {
+        from: "surface.shift"
+        to: ButtonScriptAdapter {
+          onPress: {
+            moveSizeProp.value = 6; // Move Size = 1 Beat
+            moveModeProp.value = 0;  // Beatjump
+          }
+          onRelease: {
+            moveSizeProp.value = 10; // Move Size = 16
+            moveModeProp.value = 0;  // Beatjump
+          }
+        }
+      }
+
+      WiresGroup
+      {
+        enabled: !module.shift
+        
+        Wire { from: "%surface%.browse.push"; to: "LoadButton" }
+        Wire { from: "%surface%.browse"; to: "browser.list_navigation" }
+      }
+      
+      WiresGroup
+      {
+        enabled: !module.shift && !module.syncModifier
+        
+        Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 10 } } // Move Size = 16
+        Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } } // Beatjump
+        Wire { from: "%surface%.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+        Wire { from: "%surface%.loop.push"; to: TogglePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active" } }
+        
       }
       
       WiresGroup
@@ -1680,20 +1895,16 @@ Module
         }
       }
 
-    }
+      WiresGroup
+      {
+        enabled: module.shift
 
-    WiresGroup
-    {
-      enabled: browserModeProp.value
+        Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 6 } } // Move Size = 1
+        Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } } // Beatjump
+        Wire { from: "%surface%.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+        Wire { from: "%surface%.loop.push"; to: TogglePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active" } }
+      }
 
-      Wire { from: "%surface%.browse.push"; to: TriggerPropertyAdapter { path: "app.traktor.browser.preview_player.unload" } }
-      // Wire { from: "%surface%.browse.push"; to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".load.selected" } }
-      Wire { from: "%surface%.browse.push"; to: "LoadButton" }
-      // Wire { from: "%surface%.browse.push"; to: "browser_load_gestures.input" }
-      // Wire { from: "browser_load_gestures.single_click"; to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".load.selected"; output: false } }
-      // Wire { from: "browser_load_gestures.double_click"; to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".load_secondary.selected"; output: false } }
-      // Wire { from: "browser_load_gestures.long_click"; to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".load_stems.selected"; output: false } }
-      // Wire { from: "browser_load_gestures.long_click"; to: TriggerPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".load_secondary.selected"; output: false } }
     }
 
     // WiresGroup
