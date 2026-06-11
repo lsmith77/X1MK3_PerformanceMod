@@ -528,7 +528,7 @@ Item {
           // text: "¢"
           // text: "🦋"
           // font.pixelSize: 60
-          text: "C.P.MOD V12 SÛLHEROKHH"
+          text: "C.P.MOD V13 SÛLHEROKHH"
           font.pixelSize: 24
           horizontalAlignment: Text.AlignHCenter
           wrapMode: Text.WordWrap

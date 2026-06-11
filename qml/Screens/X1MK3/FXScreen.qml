@@ -4,7 +4,7 @@ import QtQuick 2.0
 import "../../CSI/X1MK3/Defines"
 import "../Widgets" as Widgets
 // import "Scripts/DisplayHelpers.js" as DisplayHelpers
-import "../Scripts/SmallDisplayHelpers.js" as DisplayHelpers
+import "../Scripts/SmallDisplayHelpers.js" as SmallDisplayHelpers
 
 Item {
   id: screen
@@ -358,6 +358,15 @@ Item {
           case FxType.Single:
           {
             return SmallDisplayHelpers.shortParameterName(fxSelect1.description, knob);
+            // switch(knob)
+            // {
+              // case 1: return "D/W";
+              // case 2: return SmallDisplayHelpers.shortParameterName(fxSelect1.description);
+              // case 3: return SmallDisplayHelpers.shortParameterName(fxSelect2.description);
+              // case 4: return SmallDisplayHelpers.shortParameterName(fxSelect3.description);
+            // }
+
+            // break;
           }
 
           case FxType.PatternPlayer:
