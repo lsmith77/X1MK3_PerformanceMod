@@ -3,6 +3,8 @@ import QtQuick 2.0
 
 import "Defines"
 
+// X1MK3_TP4.5.0_PerformanceMod_13
+
 Mapping
 {
   id: mapping
@@ -547,11 +549,51 @@ Mapping
   MappingPropertyDescriptor { id: leftDeckIdxProp; path: "mapping.settings.left_deck_index"; type: MappingPropertyDescriptor.Integer; value: deviceSetup.leftDeckIdx }
   MappingPropertyDescriptor { id: rightDeckIdxProp; path: "mapping.settings.right_deck_index"; type: MappingPropertyDescriptor.Integer; value: deviceSetup.rightDeckIdx }
 
+  // DUPLICATE DECK
+  MappingPropertyDescriptor { 
+    id: duplicateDeckSourceIDProp; 
+    path: "mapping.state.duplicate_deck_source_id"; 
+    type: MappingPropertyDescriptor.Integer
+    value: 0
+    min: 0
+    max: 4
+  }
+
+  AppProperty { id: deckTypeProp1; path: "app.traktor.decks.1.type"; }
+  AppProperty { id: deckTypeProp2; path: "app.traktor.decks.2.type"; }
+  AppProperty { id: deckTypeProp3; path: "app.traktor.decks.3.type"; }
+  AppProperty { id: deckTypeProp4; path: "app.traktor.decks.4.type"; }
+
+  AppProperty { id: deckIsPlayingProp1; path: "app.traktor.decks.1.play"; }
+  AppProperty { id: deckIsPlayingProp2; path: "app.traktor.decks.2.play"; }
+  AppProperty { id: deckIsPlayingProp3; path: "app.traktor.decks.3.play"; }
+  AppProperty { id: deckIsPlayingProp4; path: "app.traktor.decks.4.play"; }
+
+  AppProperty { id: deckIsLoaded1; path: "app.traktor.decks.1.is_loaded"; }
+  AppProperty { id: deckIsLoaded2; path: "app.traktor.decks.2.is_loaded"; }
+  AppProperty { id: deckIsLoaded3; path: "app.traktor.decks.3.is_loaded"; }
+  AppProperty { id: deckIsLoaded4; path: "app.traktor.decks.4.is_loaded"; }
+
+  AppProperty { id: duplicateToDeck1FromDeck2; path: "app.traktor.decks.1.track.duplicate_deck.2"; }
+  AppProperty { id: duplicateToDeck1FromDeck3; path: "app.traktor.decks.1.track.duplicate_deck.3"; }
+  AppProperty { id: duplicateToDeck1FromDeck4; path: "app.traktor.decks.1.track.duplicate_deck.4"; }
+
+  AppProperty { id: duplicateToDeck2FromDeck1; path: "app.traktor.decks.2.track.duplicate_deck.1"; }
+  AppProperty { id: duplicateToDeck2FromDeck3; path: "app.traktor.decks.2.track.duplicate_deck.3"; }
+  AppProperty { id: duplicateToDeck2FromDeck4; path: "app.traktor.decks.2.track.duplicate_deck.4"; }
+
+  AppProperty { id: duplicateToDeck3FromDeck1; path: "app.traktor.decks.3.track.duplicate_deck.1"; }
+  AppProperty { id: duplicateToDeck3FromDeck2; path: "app.traktor.decks.3.track.duplicate_deck.2"; }
+  AppProperty { id: duplicateToDeck3FromDeck4; path: "app.traktor.decks.3.track.duplicate_deck.4"; }
+
+  AppProperty { id: duplicateToDeck4FromDeck1; path: "app.traktor.decks.4.track.duplicate_deck.1"; }
+  AppProperty { id: duplicateToDeck4FromDeck2; path: "app.traktor.decks.4.track.duplicate_deck.2"; }
+  AppProperty { id: duplicateToDeck4FromDeck3; path: "app.traktor.decks.4.track.duplicate_deck.3"; }
+  
   // Shift
   property alias shift: shiftProp
   MappingPropertyDescriptor { id: shiftProp; path: mapping.propertiesPath + ".shift"; type: MappingPropertyDescriptor.Boolean; value: false }
   // Wire { from: "surface.shift";  to: DirectPropertyAdapter { path: mapping.propertiesPath + ".shift"  } }
-  // Wire { from: "surface.shift";  to: DirectPropertyAdapter { path: mapping.propertiesPath + ".shift"; output: false  } }
 
   Browser { name: "browser" }
 
@@ -712,8 +754,11 @@ Mapping
     type: MappingPropertyDescriptor.Boolean;
     value: false;
     onValueChanged: {
-      if (maximizeBrowserWhenBrowsingProp.value && (browserFullScreenProp.value != value)) browserFullScreenProp.value = value
+      if (maximizeBrowserWhenBrowsingProp.value && (browserFullScreenProp.value != value)) {
+        browserFullScreenProp.value = value
+      }
       previewplayerUnloadProp.value = !previewplayerUnloadProp.value
+      duplicateDeckSourceIDProp.value = 0
     }
   }
   
