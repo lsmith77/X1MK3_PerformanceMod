@@ -81,6 +81,9 @@ Module
   property bool alternateEncoderActive: !customBrowserModeProp.value && alternateEncoderSetupToggleProp.value
   property bool customBrowserModeActive: customBrowserModeProp.value && !browserModeProp.value
   property bool browserModeActive: customBrowserModeProp.value && browserModeProp.value
+  
+  // Transport
+  // readonly property int customBeatJumpLength: customBeatJumpLengthProp.value
 
   // Mixer Properties
   AppProperty { id: channelEqHighProp; path: "app.traktor.mixer.channels." + module.deckIdx + ".eq.high" }
@@ -1713,11 +1716,15 @@ Module
             else moveModeProp.value = 0;  // Beatjump
           }
           onRelease: {
-            moveSizeProp.value = 12; // Move Size = Loop
+            // moveSizeProp.value = 12; // Move Size = Loop
             if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+              moveSizeProp.value = 12; // Move Size = Loop
               moveModeProp.value = 1;  // Move Loop
             }
-            else moveModeProp.value = 0;  // Beatjump
+            else {
+              moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
+              moveModeProp.value = 0;  // Beatjump
+            }
           }
         }
       }
@@ -1726,8 +1733,35 @@ Module
       {
         enabled: !module.shift
         
-        Wire { from: "%surface%.browse"; to: "loop.move"; }
-      
+        // Wire { from: "%surface%.browse"; to: "loop.move"; }
+        // Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: customBeatJumpLengthProp.value } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Move Size = custom BeatJump length
+        // Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 12 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Size = Loop
+        Wire { from: "%surface%.browse.turn"; to: EncoderScriptAdapter {
+            onTick: {
+              if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+                moveSizeProp.value = 12; // Move Size = Loop
+              }
+              else {
+                moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
+              }
+            }
+          }
+        }
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Beatjump
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Loop
+        Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+        Wire { from: "%surface%.browse.push"; to: TogglePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active" } }
+        Wire { from: "%surface%.browse.push"; to: ButtonScriptAdapter {
+            onRelease: {
+              if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+                moveSizeProp.value = 12; // Move Size = Loop
+              }
+              else {
+                moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
+              }
+            }
+          }
+        }
       }
       
       WiresGroup
@@ -1735,6 +1769,17 @@ Module
         enabled: !module.shift && !module.syncModifier
         
         Wire { from: "%surface%.loop"; to: "loop.autoloop"; }
+        Wire { from: "%surface%.loop.push"; to: ButtonScriptAdapter {
+            onRelease: {
+              if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+                moveSizeProp.value = 12; // Move Size = Loop
+              }
+              else {
+                moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
+              }
+            }
+          }
+        }
       
       }
 

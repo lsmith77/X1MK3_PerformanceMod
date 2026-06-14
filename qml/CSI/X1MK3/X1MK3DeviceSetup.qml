@@ -225,7 +225,7 @@ Module
         onRelease: {
           if (deviceSetupExitTimer.running) {
             deviceSetupExitTimer.stop()
-            deviceSetupPageProp.value = (deviceSetupPageProp.value == 3) ? deviceSetupPageProp.value = 1 : deviceSetupPageProp.value = deviceSetupPageProp.value + 1
+            deviceSetupPageProp.value = (deviceSetupPageProp.value == 4) ? deviceSetupPageProp.value = 1 : deviceSetupPageProp.value = deviceSetupPageProp.value + 1
           }
         }
       }
@@ -686,25 +686,27 @@ Module
         }
       }
       
-      Wire {
-        from: "%surface%.left.fx.buttons.3"
-        to: ButtonScriptAdapter {
-          color: Color.WarmYellow
-          brightness: customCueAndPlayProp.value
-          onPress: {
-            lastTouchedButtonLeftSideProp.value = 15
-            customCueAndPlayProp.value = !customCueAndPlayProp.value
-          }
-        }
-      }
+      // Wire {
+        // from: "%surface%.left.fx.buttons.3"
+        // to: ButtonScriptAdapter {
+          // color: Color.WarmYellow
+          // brightness: customCueAndPlayProp.value
+          // onPress: {
+            // lastTouchedButtonLeftSideProp.value = 15
+            // customCueAndPlayProp.value = !customCueAndPlayProp.value
+          // }
+        // }
+      // }
       
       Wire {
-        from: "%surface%.left.fx.buttons.4"
+        // from: "%surface%.left.fx.buttons.4"
+        from: "%surface%.left.fx.buttons.3"
         to: ButtonScriptAdapter {
           color: Color.Blue
           brightness: customInvertMixerFxLedProp.value
           onPress: {
-            lastTouchedButtonLeftSideProp.value = 16
+            // lastTouchedButtonLeftSideProp.value = 16
+            lastTouchedButtonLeftSideProp.value = 15
             customInvertMixerFxLedProp.value = !customInvertMixerFxLedProp.value
           }
         }
@@ -712,12 +714,14 @@ Module
       
       
       Wire {
-        from: "%surface%.right.fx.buttons.1"
+        // from: "%surface%.right.fx.buttons.1"
+        from: "%surface%.left.fx.buttons.4"
         to: ButtonScriptAdapter {
           color: Color.Plum
           brightness: customOvermappingEngagedProp.value
           onPress: {
-            lastTouchedButtonRightSideProp.value = 13
+            // lastTouchedButtonRightSideProp.value = 13
+            lastTouchedButtonLeftSideProp.value = 16
             customOvermappingEngagedProp.value = !customOvermappingEngagedProp.value
           }
         }
@@ -758,6 +762,50 @@ Module
           onPress: {
             lastTouchedButtonRightSideProp.value = 16
             customSecondaryFXOverlayBlockProp.value = !customSecondaryFXOverlayBlockProp.value
+          }
+        }
+      }
+    }
+    
+    WiresGroup {
+      enabled: (deviceSetupPageProp.value == 4)
+      
+      // TRANSPORT AND TEMPO
+      
+      Wire {
+        from: "%surface%.left.fx.buttons.1"
+        to: ButtonScriptAdapter {
+          color: Color.WarmYellow
+          brightness: customCueAndPlayProp.value
+          onPress: {
+            lastTouchedButtonLeftSideProp.value = 17
+            customCueAndPlayProp.value = !customCueAndPlayProp.value
+          }
+        }
+      }
+      
+      Wire {
+        enabled: customBrowserModeProp.value
+        from: "%surface%.left.fx.buttons.3"
+        to: ButtonScriptAdapter {
+          color: Color.Turquoise
+          brightness: (customBeatJumpLengthProp.value > 6) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonLeftSideProp.value = 18
+            customBeatJumpLengthProp.value = customBeatJumpLengthProp.value - 1
+          }
+        }
+      }
+
+      Wire {
+        enabled: customBrowserModeProp.value
+        from: "%surface%.left.fx.buttons.4"
+        to: ButtonScriptAdapter {
+          color: Color.Turquoise
+          brightness: (customBeatJumpLengthProp.value < 12) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonLeftSideProp.value = 18
+            customBeatJumpLengthProp.value = customBeatJumpLengthProp.value + 1
           }
         }
       }

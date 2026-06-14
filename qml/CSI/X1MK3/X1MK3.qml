@@ -319,6 +319,14 @@ Mapping
     type: MappingPropertyDescriptor.Boolean
     value: false
   }
+  MappingPropertyDescriptor {
+    id: customBeatJumpLengthProp
+    path: "mapping.settings.custom_beatjump_length"
+    type: MappingPropertyDescriptor.Integer
+    value: 12 // 1, 2, 4, 8, 16, 32, Loop Length beats
+    min: 6 // 1 beat
+    max: 12 // Loop Length beats
+  }
   
   MappingPropertyDescriptor {
     id: customOvermappingEngagedProp

@@ -25,7 +25,7 @@ Item {
   MappingProperty { id: deviceSetupPageProp; path: screen.propertiesPath + ".device_setup_page" }
   // readonly property string deviceSetupPageString: "SETUP PAGE " + deviceSetupPageProp.value
   readonly property string deviceSetupPageString: setupText[deviceSetupPageProp.value] + "SETUP P. " + deviceSetupPageProp.value
-  readonly property variant setupText: ["", " MIXER  ", "BRWS./BEAT. ", " MISC./FX  "]
+  readonly property variant setupText: ["", " MIXER  ", "BRWS./BEAT. ", " MISC./FX  ", "TRANSPORT "]
   
   MappingProperty { id: deckAssignmentProp; path: "mapping.settings.deck_assignment" }
   MappingProperty { id: customDeckSwitchAcVariantProp; path: "mapping.settings.custom_deck_switch_ac_variant" }
