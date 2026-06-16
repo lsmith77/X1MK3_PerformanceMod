@@ -308,24 +308,10 @@ Mapping
     value: false
   }
   MappingPropertyDescriptor {
-    id: customCueAndPlayProp
-    path: "mapping.settings.custom_cue_and_play"
-    type: MappingPropertyDescriptor.Boolean
-    value: false
-  }
-  MappingPropertyDescriptor {
     id: customInvertMixerFxLedProp
     path: "mapping.settings.custom_invert_mixerfx_led"
     type: MappingPropertyDescriptor.Boolean
     value: false
-  }
-  MappingPropertyDescriptor {
-    id: customBeatJumpLengthProp
-    path: "mapping.settings.custom_beatjump_length"
-    type: MappingPropertyDescriptor.Integer
-    value: 12 // 1, 2, 4, 8, 16, 32, Loop Length beats
-    min: 6 // 1 beat
-    max: 12 // Loop Length beats
   }
   
   MappingPropertyDescriptor {
@@ -343,6 +329,40 @@ Mapping
         remixPageDeckB.value = 0
       }
     }
+  }
+
+
+  // TRANSPORT SETTINGS
+  
+  MappingPropertyDescriptor {
+    id: customCueAndPlayProp
+    path: "mapping.settings.custom_cue_and_play"
+    type: MappingPropertyDescriptor.Boolean
+    value: false
+  }
+  MappingPropertyDescriptor {
+    id: customBeatJumpLengthProp
+    path: "mapping.settings.custom_beatjump_length"
+    type: MappingPropertyDescriptor.Integer
+    value: 12 // 1, 2, 4, 8, 16, 32, Loop Length beats
+    min: 6 // 1 beat
+    max: 12 // Loop Length beats
+  }
+  MappingPropertyDescriptor {
+    id: customEncoderTempoStepSizeProp
+    path: "mapping.settings.custom_encoder_tempo_step_size"
+    type: MappingPropertyDescriptor.Integer
+    value: 1 // BPM
+    min: 1
+    max: 100
+  }
+  MappingPropertyDescriptor {
+    id: customEncoderHoldTempoStepSizeProp
+    path: "mapping.settings.custom_encoder_hold_tempo_step_size"
+    type: MappingPropertyDescriptor.Integer
+    value: 100 // BPM
+    min: 1
+    max: 100
   }
   
   

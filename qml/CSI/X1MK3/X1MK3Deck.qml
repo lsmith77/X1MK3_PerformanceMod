@@ -1178,12 +1178,16 @@ Module
             module.resetTempoEngaged = false;
           }
           onIncrement: {
-            if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value + (module.coarseTempoStep ? 1 : 0.01)
-            else bpmProp.value = bpmProp.value + (module.coarseTempoStep ? 1 : 0.01)
+            // if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value + (module.coarseTempoStep ? 1 : 0.01)
+            // else bpmProp.value = bpmProp.value + (module.coarseTempoStep ? 1 : 0.01)
+            if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value + (module.coarseTempoStep ? customEncoderHoldTempoStepSizeProp.value * 0.01 : customEncoderTempoStepSizeProp.value * 0.01)
+            else bpmProp.value = bpmProp.value + (module.coarseTempoStep ? customEncoderHoldTempoStepSizeProp.value * 0.01 : customEncoderTempoStepSizeProp.value * 0.01)
           }
           onDecrement: {
-            if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value - (module.coarseTempoStep ? 1 : 0.01)
-            else bpmProp.value = bpmProp.value - (module.coarseTempoStep ? 1 : 0.01)
+            // if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value - (module.coarseTempoStep ? 1 : 0.01)
+            // else bpmProp.value = bpmProp.value - (module.coarseTempoStep ? 1 : 0.01)
+            if (module.isSlaveDeck) clockBPMProp.value = clockBPMProp.value - (module.coarseTempoStep ? customEncoderHoldTempoStepSizeProp.value * 0.01 : customEncoderTempoStepSizeProp.value * 0.01)
+            else bpmProp.value = bpmProp.value - (module.coarseTempoStep ? customEncoderHoldTempoStepSizeProp.value * 0.01 : customEncoderTempoStepSizeProp.value * 0.01)
           }
         }
       }

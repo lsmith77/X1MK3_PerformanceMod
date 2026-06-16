@@ -809,6 +809,54 @@ Module
           }
         }
       }
+    
+      Wire {
+        from: "%surface%.right.fx.buttons.2"
+        to: ButtonScriptAdapter {
+          color: Color.Plum
+          brightness: (customEncoderTempoStepSizeProp.value > 1) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonRightSideProp.value = 17
+            customEncoderTempoStepSizeProp.value = customEncoderTempoStepSizeProp.value - 1
+          }
+        }
+      }
+
+      Wire {
+        from: "%surface%.right.fx.buttons.1"
+        to: ButtonScriptAdapter {
+          color: Color.Plum
+          brightness: (customEncoderTempoStepSizeProp.value < 100) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonRightSideProp.value = 17
+            customEncoderTempoStepSizeProp.value = customEncoderTempoStepSizeProp.value + 1
+          }
+        }
+      }
+    
+      Wire {
+        from: "%surface%.right.fx.buttons.4"
+        to: ButtonScriptAdapter {
+          color: Color.Violet
+          brightness: (customEncoderHoldTempoStepSizeProp.value > 1) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonRightSideProp.value = 19
+            customEncoderHoldTempoStepSizeProp.value = customEncoderHoldTempoStepSizeProp.value - 1
+          }
+        }
+      }
+
+      Wire {
+        from: "%surface%.right.fx.buttons.3"
+        to: ButtonScriptAdapter {
+          color: Color.Violet
+          brightness: (customEncoderHoldTempoStepSizeProp.value < 100) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonRightSideProp.value = 19
+            customEncoderHoldTempoStepSizeProp.value = customEncoderHoldTempoStepSizeProp.value + 1
+          }
+        }
+      }
     }
     
   }

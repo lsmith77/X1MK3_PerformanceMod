@@ -37,25 +37,35 @@ Item {
   readonly property variant buttonText14: ["Switch Mute/FX", "FX Assignm. Unit Focus"]
   readonly property variant buttonText15: ["Mixer FX Invt. LED", "FX Units Deck-Link"]
   readonly property variant buttonText16: ["Overmap Modifier", "Block 2nd FX Overlay"]
-  readonly property variant buttonText17: ["Cue And Play", ""]
+  readonly property variant buttonText17: ["Cue And Play", "Enc.Step " + encoderTempoStepSize + " BPM"]
+  // readonly property variant buttonText17: ["Cue And Play", ""]
   readonly property variant buttonText18: ["BeatJump L. " + beatJumpLength + " Beats", ""]
-  readonly property variant buttonText19: ["", ""]
+  readonly property variant buttonText19: ["", "Enc.HldStp " + encoderHoldTempoStepSize + " BPM"]
+  // readonly property variant buttonText19: ["", ""]
   readonly property variant buttonText20: ["", ""]
   
   property int leftSide: propertiesPath == "mapping.state.left.fx" ? 0 : 1;
   readonly property string setupText: "" + setupTextButton[lastTouchedButton]
   
   MappingProperty { id: deckDisplayMainInfoProp; path: "mapping.settings.deck_display.main_info" }
-  property string deckDisplayMainInfoString: (deckDisplayMainInfoProp.value == 0) ? ( customBeatCounterEngagedProp.value ? "Beats To Cue" : "Remaining Time" ) : (deckDisplayMainInfoProp.value == 1) ? ( customBeatCounterEngagedProp.value ? "Elapsed Beats" : "Elapsed Time" ) : "Display Loop Size"
+  readonly property string deckDisplayMainInfoString: (deckDisplayMainInfoProp.value == 0) ? ( customBeatCounterEngagedProp.value ? "Beats To Cue" : "Remaining Time" ) : (deckDisplayMainInfoProp.value == 1) ? ( customBeatCounterEngagedProp.value ? "Elapsed Beats" : "Elapsed Time" ) : "Display Loop Size"
   
   MappingProperty { id: customBeatCounterEngagedProp; path: "mapping.settings.custom_beatcounter_engaged" }
-  property string timeBeatCounter: customBeatCounterEngagedProp.value ? "Display Beats" : "Display Time"
+  readonly property string timeBeatCounter: customBeatCounterEngagedProp.value ? "Display Beats" : "Display Time"
   
   MappingProperty { id: customBeatCounterPhraseLengthProp; path: "mapping.settings.custom_phrase_length" }
-  property string phraseLength: Math.pow (2, customBeatCounterPhraseLengthProp.value)
+  readonly property string phraseLength: Math.pow (2, customBeatCounterPhraseLengthProp.value)
 
   MappingProperty { id: customBeatJumpLengthProp; path: "mapping.settings.custom_beatjump_length" }
-  property string beatJumpLength: customBeatJumpLengthProp.value == 12 ? "Loop" : Math.pow (2, (customBeatJumpLengthProp.value -6) )
+  readonly property string beatJumpLength: customBeatJumpLengthProp.value == 12 ? "Loop" : Math.pow (2, (customBeatJumpLengthProp.value -6) )
+
+  MappingProperty { id: customEncoderTempoStepSizeProp; path: "mapping.settings.custom_encoder_tempo_step_size" }
+  // property string encoderTempoStepSize: customEncoderTempoStepSizeProp.value == 100 ? "1.00" : "1." + customEncoderTempoStepSizeProp.value
+  readonly property string encoderTempoStepSize: (customEncoderTempoStepSizeProp.value / 100).toFixed(2).toString()
+
+  MappingProperty { id: customEncoderHoldTempoStepSizeProp; path: "mapping.settings.custom_encoder_hold_tempo_step_size" }
+  // property string encoderHoldTempoStepSize: customEncoderHoldTempoStepSizeProp.value == 100 ? "1.00" : "1." + customEncoderHoldTempoStepSizeProp.value
+  readonly property string encoderHoldTempoStepSize: (customEncoderHoldTempoStepSizeProp.value / 100).toFixed(2).toString()
 
   MappingProperty {
     id: customKnobAssignmentEqHigh;
