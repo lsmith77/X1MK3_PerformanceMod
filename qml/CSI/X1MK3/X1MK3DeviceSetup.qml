@@ -274,6 +274,15 @@ Module
           }
         }
         Wire {
+          from: "%surface%.left.fx.knobs.1"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 1
+            }
+          }
+        }
+        
+        Wire {
           from: "%surface%.left.fx.buttons.2"; to: ButtonScriptAdapter {
             color: mixerAssignmentColor(customKnobAssignmentEqMid.value)
             brightness: customKnobAssignmentEqMid.value;
@@ -292,6 +301,15 @@ Module
             }
           }
         }
+        Wire {
+          from: "%surface%.left.fx.knobs.2"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 2
+            }
+          }
+        }
+        
         Wire {
           from: "%surface%.left.fx.buttons.3"; to: ButtonScriptAdapter {
             color: mixerAssignmentColor(customKnobAssignmentEqMidLow.value)
@@ -312,6 +330,15 @@ Module
           }
         }
         Wire {
+          from: "%surface%.left.fx.knobs.3"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 3
+            }
+          }
+        }
+        
+        Wire {
           from: "%surface%.left.fx.buttons.4"; to: ButtonScriptAdapter {
             color: mixerAssignmentColor(customKnobAssignmentEqLow.value)
             brightness: customKnobAssignmentEqLow.value;
@@ -330,6 +357,15 @@ Module
             }
           }
         }
+        Wire {
+          from: "%surface%.left.fx.knobs.4"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 4
+            }
+          }
+        }
+        
       
         Wire {
           from: "%surface%.right.fx.buttons.1"; to: ButtonScriptAdapter {
@@ -351,6 +387,15 @@ Module
           }
         }
         Wire {
+          from: "%surface%.right.fx.knobs.1"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonRightSideProp.value = 1
+            }
+          }
+        }
+        
+        Wire {
           from: "%surface%.right.fx.buttons.2"; to: ButtonScriptAdapter {
             color: mixerAssignmentColor(customKnobAssignmentGain.value)
             brightness: customKnobAssignmentGain.value;
@@ -369,6 +414,15 @@ Module
             }
           }
         }
+        Wire {
+          from: "%surface%.right.fx.knobs.2"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonRightSideProp.value = 2
+            }
+          }
+        }
+        
         Wire {
           from: "%surface%.right.fx.buttons.3"; to: ButtonScriptAdapter {
             color: mixerAssignmentColor(customKnobAssignmentMixerFx.value)
@@ -389,6 +443,15 @@ Module
           }
         }
       }
+        Wire {
+          from: "%surface%.right.fx.knobs.3"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonRightSideProp.value = 3
+            }
+          }
+        }
+        
 
       WiresGroup {
         enabled: shift
@@ -414,6 +477,15 @@ Module
           }
         }
         Wire {
+          from: "%surface%.left.fx.knobs.1"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 5
+            }
+          }
+        }
+        
+        Wire {
           enabled: customKnobAssignmentEqMid.value != 0
           from: "%surface%.left.fx.buttons.2"; to: ButtonScriptAdapter {
             color: mixerAssignmentLayerColor(customLayerAssignmentEqMid.value)
@@ -433,6 +505,15 @@ Module
             }
           }
         }
+        Wire {
+          from: "%surface%.left.fx.knobs.2"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 6
+            }
+          }
+        }
+        
         Wire {
           enabled: customKnobAssignmentEqMidLow.value != 0
           from: "%surface%.left.fx.buttons.3"; to: ButtonScriptAdapter {
@@ -454,6 +535,15 @@ Module
           }
         }
         Wire {
+          from: "%surface%.left.fx.knobs.3"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 7
+            }
+          }
+        }
+        
+        Wire {
           enabled: customKnobAssignmentEqLow.value != 0
           from: "%surface%.left.fx.buttons.4"; to: ButtonScriptAdapter {
             color: mixerAssignmentLayerColor(customLayerAssignmentEqLow.value)
@@ -473,6 +563,15 @@ Module
             }
           }
         }
+        Wire {
+          from: "%surface%.left.fx.knobs.4"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonLeftSideProp.value = 8
+            }
+          }
+        }
+        
 
         Wire {
           enabled: customKnobAssignmentVolume.value != 0
@@ -495,6 +594,15 @@ Module
           }
         }
         Wire {
+          from: "%surface%.right.fx.knobs.1"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonRightSideProp.value = 5
+            }
+          }
+        }
+        
+        Wire {
           enabled: customKnobAssignmentGain.value != 0
           from: "%surface%.right.fx.buttons.2"; to: ButtonScriptAdapter {
             color: mixerAssignmentLayerColor(customLayerAssignmentGain.value)
@@ -515,6 +623,15 @@ Module
           }
         }
         Wire {
+          from: "%surface%.right.fx.knobs.2"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonRightSideProp.value = 6
+            }
+          }
+        }
+        
+        Wire {
           enabled: customKnobAssignmentMixerFx.value != 0
           from: "%surface%.right.fx.buttons.3"; to: ButtonScriptAdapter {
             color: mixerAssignmentLayerColor(customLayerAssignmentMixerFx.value)
@@ -534,6 +651,15 @@ Module
             }
           }
         }
+        Wire {
+          from: "%surface%.right.fx.knobs.3"
+          to: KnobScriptAdapter {
+            onTurn: {
+              lastTouchedButtonRightSideProp.value = 3
+            }
+          }
+        }
+        
       }
       
       Wire {
@@ -544,6 +670,14 @@ Module
           onPress: {
             lastTouchedButtonRightSideProp.value = 4
             customMixerOverlayBlockProp.value = !customMixerOverlayBlockProp.value
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.right.fx.knobs.4"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 4
           }
         }
       }
@@ -560,20 +694,36 @@ Module
           color: Color.White
           brightness: maximizeBrowserWhenBrowsingProp.value
           onPress: {
-            lastTouchedButtonLeftSideProp.value = 10 //change number and then labels in screen display file
+            lastTouchedButtonLeftSideProp.value = 9
             maximizeBrowserWhenBrowsingProp.value = !maximizeBrowserWhenBrowsingProp.value
           }
         }
       }
-
+      Wire {
+        from: "%surface%.left.fx.knobs.1"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 9
+          }
+        }
+      }
+      
       Wire {
         from: "%surface%.left.fx.buttons.2"
         to: ButtonScriptAdapter {
           color: Color.White
           brightness: customBrowserModeProp.value
           onPress: {
-            lastTouchedButtonLeftSideProp.value = 9 //change number and then labels in screen display file
+            lastTouchedButtonLeftSideProp.value = 10
             customBrowserModeProp.value = !customBrowserModeProp.value
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.left.fx.knobs.2"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 10
           }
         }
       }
@@ -590,6 +740,14 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.left.fx.knobs.3"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 11
+          }
+        }
+      }
       
       Wire {
         from: "%surface%.left.fx.buttons.4"
@@ -599,6 +757,14 @@ Module
           onPress: {
             lastTouchedButtonLeftSideProp.value = 12
             customDeckSwitchOnSingleClickProp.value = !customDeckSwitchOnSingleClickProp.value
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.left.fx.knobs.4"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 12
           }
         }
       }
@@ -617,6 +783,14 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.right.fx.knobs.1"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 9
+          }
+        }
+      }
       
       Wire {
         enabled: (deckDisplayMainInfoProp.value < 2)
@@ -630,9 +804,17 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.right.fx.knobs.2"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 10
+          }
+        }
+      }
       
       Wire {
-        enabled: (deckDisplayMainInfoProp.value < 2) // && customBeatCounterEngagedProp.value
+        enabled: (deckDisplayMainInfoProp.value < 2)
         from: "%surface%.right.fx.buttons.3"
         to: ButtonScriptAdapter {
           color: Color.Turquoise
@@ -643,9 +825,17 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.right.fx.knobs.3"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 11
+          }
+        }
+      }
 
       Wire {
-        enabled: (deckDisplayMainInfoProp.value < 2) // && customBeatCounterEngagedProp.value
+        enabled: (deckDisplayMainInfoProp.value < 2)
         from: "%surface%.right.fx.buttons.4"
         to: ButtonScriptAdapter {
           color: Color.Turquoise
@@ -656,6 +846,15 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.right.fx.knobs.4"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 11
+          }
+        }
+      }
+      
     }
     
     WiresGroup {
@@ -673,6 +872,14 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.left.fx.knobs.1"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 13 
+          }
+        }
+      }
       
       Wire {
         from: "%surface%.left.fx.buttons.2"
@@ -685,44 +892,51 @@ Module
           }
         }
       }
-      
-      // Wire {
-        // from: "%surface%.left.fx.buttons.3"
-        // to: ButtonScriptAdapter {
-          // color: Color.WarmYellow
-          // brightness: customCueAndPlayProp.value
-          // onPress: {
-            // lastTouchedButtonLeftSideProp.value = 15
-            // customCueAndPlayProp.value = !customCueAndPlayProp.value
-          // }
-        // }
-      // }
+      Wire {
+        from: "%surface%.left.fx.knobs.2"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 14
+          }
+        }
+      }
       
       Wire {
-        // from: "%surface%.left.fx.buttons.4"
         from: "%surface%.left.fx.buttons.3"
         to: ButtonScriptAdapter {
           color: Color.Blue
           brightness: customInvertMixerFxLedProp.value
           onPress: {
-            // lastTouchedButtonLeftSideProp.value = 16
             lastTouchedButtonLeftSideProp.value = 15
             customInvertMixerFxLedProp.value = !customInvertMixerFxLedProp.value
           }
         }
       }
-      
+      Wire {
+        from: "%surface%.left.fx.knobs.3"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 15
+          }
+        }
+      }
       
       Wire {
-        // from: "%surface%.right.fx.buttons.1"
         from: "%surface%.left.fx.buttons.4"
         to: ButtonScriptAdapter {
           color: Color.Plum
           brightness: customOvermappingEngagedProp.value
           onPress: {
-            // lastTouchedButtonRightSideProp.value = 13
             lastTouchedButtonLeftSideProp.value = 16
             customOvermappingEngagedProp.value = !customOvermappingEngagedProp.value
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.left.fx.knobs.4"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 16 //change number and then labels in screen display file
           }
         }
       }
@@ -739,6 +953,14 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.right.fx.knobs.2"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 14
+          }
+        }
+      }
       
       Wire {
         enabled: fxMode.value != FxMode.TwoFxUnits
@@ -749,6 +971,14 @@ Module
           onPress: {
             lastTouchedButtonRightSideProp.value = 15
             customLinkFXOverlayToDeckProp.value = !customLinkFXOverlayToDeckProp.value
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.right.fx.knobs.3"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 15
           }
         }
       }
@@ -765,6 +995,15 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.right.fx.knobs.4"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 16
+          }
+        }
+      }
+      
     }
     
     WiresGroup {
@@ -783,6 +1022,14 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.left.fx.knobs.1"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 17
+          }
+        }
+      }
       
       Wire {
         enabled: customBrowserModeProp.value
@@ -793,6 +1040,14 @@ Module
           onPress: {
             lastTouchedButtonLeftSideProp.value = 18
             customBeatJumpLengthProp.value = customBeatJumpLengthProp.value - 1
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.left.fx.knobs.3"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 18
           }
         }
       }
@@ -809,19 +1064,15 @@ Module
           }
         }
       }
-    
       Wire {
-        from: "%surface%.right.fx.buttons.2"
-        to: ButtonScriptAdapter {
-          color: Color.Plum
-          brightness: (customEncoderTempoStepSizeProp.value > 1) ? 1.0 : 0.0
-          onPress: {
-            lastTouchedButtonRightSideProp.value = 17
-            customEncoderTempoStepSizeProp.value = customEncoderTempoStepSizeProp.value - 1
+        from: "%surface%.left.fx.knobs.4"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 18
           }
         }
       }
-
+    
       Wire {
         from: "%surface%.right.fx.buttons.1"
         to: ButtonScriptAdapter {
@@ -833,19 +1084,35 @@ Module
           }
         }
       }
-    
       Wire {
-        from: "%surface%.right.fx.buttons.4"
-        to: ButtonScriptAdapter {
-          color: Color.Violet
-          brightness: (customEncoderHoldTempoStepSizeProp.value > 1) ? 1.0 : 0.0
-          onPress: {
-            lastTouchedButtonRightSideProp.value = 19
-            customEncoderHoldTempoStepSizeProp.value = customEncoderHoldTempoStepSizeProp.value - 1
+        from: "%surface%.right.fx.knobs.1"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 17
           }
         }
       }
 
+      Wire {
+        from: "%surface%.right.fx.buttons.2"
+        to: ButtonScriptAdapter {
+          color: Color.Plum
+          brightness: (customEncoderTempoStepSizeProp.value > 1) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonRightSideProp.value = 17
+            customEncoderTempoStepSizeProp.value = customEncoderTempoStepSizeProp.value - 1
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.right.fx.knobs.2"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 17
+          }
+        }
+      }
+    
       Wire {
         from: "%surface%.right.fx.buttons.3"
         to: ButtonScriptAdapter {
@@ -857,6 +1124,35 @@ Module
           }
         }
       }
+      Wire {
+        from: "%surface%.right.fx.knobs.3"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 19
+          }
+        }
+      }
+
+      Wire {
+        from: "%surface%.right.fx.buttons.4"
+        to: ButtonScriptAdapter {
+          color: Color.Violet
+          brightness: (customEncoderHoldTempoStepSizeProp.value > 1) ? 1.0 : 0.0
+          onPress: {
+            lastTouchedButtonRightSideProp.value = 19
+            customEncoderHoldTempoStepSizeProp.value = customEncoderHoldTempoStepSizeProp.value - 1
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.right.fx.knobs.4"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 19
+          }
+        }
+      }
+      
     }
     
   }
