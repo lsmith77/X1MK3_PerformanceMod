@@ -1694,11 +1694,75 @@ Module
         }
       }
 
+      Wire {
+        enabled: (loopShiftAction == beatjump_loop) && (deckTypeProp.value != DeckType.Remix)
+        from: "surface.shift.value"; to: ButtonScriptAdapter {
+          onPress: {
+            if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+              moveModeProp.value = 1; // Move Loop
+              moveSizeProp.value = 6; // Move Size = 1 Beat
+            }
+            else {
+              moveModeProp.value = 0; // Beatjump
+              moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
+            }
+          }
+        }
+      }
+      
       WiresGroup
       {
         enabled: module.shift
 
-        Wire { from: "%surface%.loop"; to: "loop.move"; enabled: loopShiftAction == beatjump_loop }
+        // Wire { from: "%surface%.loop"; to: "loop.move"; enabled: loopShiftAction == beatjump_loop }
+
+        WiresGroup
+        {
+          enabled: loopShiftAction == beatjump_loop
+          
+          Wire { from: "%surface%.loop.turn"; to: EncoderScriptAdapter {
+              onTick: {
+                if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+                  moveModeProp.value = 1; // Move Loop
+                  moveSizeProp.value = 12; // Move Size = Loop
+                }
+                else {
+                  moveModeProp.value = 0; // Beatjump
+                  moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
+                }
+              }
+            }
+          }
+          Wire { from: "%surface%.loop.push"; to: ButtonScriptAdapter {
+              onRelease: {
+                if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+                  moveSizeProp.value = 12; // Move Size = Loop
+                  moveModeProp.value = 1; // Move Loop
+                }
+                else {
+                  moveModeProp.value = 0; // Beatjump
+                  moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
+                }
+              }
+            }
+          }
+          
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 6 } enabled: customBeatJumpLengthProp.value == 6 } // Move Size = custom BeatJump length
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 7 } enabled: customBeatJumpLengthProp.value == 7 } // Move Size = custom BeatJump length
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 8 } enabled: customBeatJumpLengthProp.value == 8 } // Move Size = custom BeatJump length
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 9 } enabled: customBeatJumpLengthProp.value == 9 } // Move Size = custom BeatJump length
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 10 } enabled: customBeatJumpLengthProp.value == 10 } // Move Size = custom BeatJump length
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 11 } enabled: customBeatJumpLengthProp.value == 11 } // Move Size = custom BeatJump length
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 12 } enabled: ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) || customBeatJumpLengthProp.value == 12 } // Move Size = Loop
+
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Beatjump
+          Wire { from: "%surface%.loop.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Loop
+          
+          Wire { from: "%surface%.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+          Wire { from: "%surface%.loop.push"; to: TogglePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active" } }
+
+        }
+        
         Wire { from: "%surface%.loop"; to: "key_control.coarse"; enabled: (loopShiftAction == key_adjust) && (deckTypeProp.value != DeckType.Remix) }
       }
       
@@ -1710,7 +1774,7 @@ Module
       enabled: module.customBrowserModeActive
 
       Wire {
-        from: "surface.shift"
+        from: "surface.shift.value"
         to: ButtonScriptAdapter {
           onPress: {
             moveSizeProp.value = 6; // Move Size = 1 Beat
@@ -1720,7 +1784,6 @@ Module
             else moveModeProp.value = 0;  // Beatjump
           }
           onRelease: {
-            // moveSizeProp.value = 12; // Move Size = Loop
             if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
               moveSizeProp.value = 12; // Move Size = Loop
               moveModeProp.value = 1;  // Move Loop
@@ -1738,34 +1801,47 @@ Module
         enabled: !module.shift
         
         // Wire { from: "%surface%.browse"; to: "loop.move"; }
-        // Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: customBeatJumpLengthProp.value } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Move Size = custom BeatJump length
-        // Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 12 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Size = Loop
+        
         Wire { from: "%surface%.browse.turn"; to: EncoderScriptAdapter {
             onTick: {
               if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+                moveModeProp.value = 1; // Move Loop
                 moveSizeProp.value = 12; // Move Size = Loop
               }
               else {
+                moveModeProp.value = 0; // Beatjump
                 moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
               }
             }
           }
         }
-        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Beatjump
-        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Loop
-        Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
-        Wire { from: "%surface%.browse.push"; to: TogglePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active" } }
         Wire { from: "%surface%.browse.push"; to: ButtonScriptAdapter {
             onRelease: {
               if ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) {
+                moveModeProp.value = 1; // Move Loop
                 moveSizeProp.value = 12; // Move Size = Loop
               }
               else {
+                moveModeProp.value = 0; // Beatjump
                 moveSizeProp.value = customBeatJumpLengthProp.value; // Move Size = custom BeatJump length
               }
             }
           }
         }
+        
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 6 } enabled: customBeatJumpLengthProp.value == 6 } // Move Size = custom BeatJump length
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 7 } enabled: customBeatJumpLengthProp.value == 7 } // Move Size = custom BeatJump length
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 8 } enabled: customBeatJumpLengthProp.value == 8 } // Move Size = custom BeatJump length
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 9 } enabled: customBeatJumpLengthProp.value == 9 } // Move Size = custom BeatJump length
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 10 } enabled: customBeatJumpLengthProp.value == 10 } // Move Size = custom BeatJump length
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 11 } enabled: customBeatJumpLengthProp.value == 11 } // Move Size = custom BeatJump length
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.size"; value: 12 } enabled: ( loopActiveProp.value && ( activeCueTypeProp.value == 5 ) ) || customBeatJumpLengthProp.value == 12 } // Move Size = Loop
+        
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 0 } enabled: !loopActiveProp.value || ( activeCueTypeProp.value != 5 ) } // Beatjump
+        Wire { from: "%surface%.browse.is_turned"; to: SetPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move.mode"; value: 1 } enabled: loopActiveProp.value && ( activeCueTypeProp.value == 5 ) } // Move Loop
+        
+        Wire { from: "%surface%.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".move_internal"; step: 1; mode: RelativeMode.Stepped } }
+        Wire { from: "%surface%.browse.push"; to: TogglePropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".loop.active" } }
       }
       
       WiresGroup

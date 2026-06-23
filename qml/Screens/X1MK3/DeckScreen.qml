@@ -125,6 +125,14 @@ Item {
 
   AppProperty { id: deckLoadedSignal; path: "app.traktor.decks." + deckIdx + ".is_loaded_signal"; onValueChanged: resetTitle() }
   
+  // Pop Up Phase Meter
+  // AppProperty { id: tempoPhaseProp;path: "app.traktor.decks." + deckIdx + ".tempo.phase"; }
+  // readonly property real tempoPhase: tempoPhaseProp.value
+  
+  // MappingProperty { id: showPhaseMeterProp; path: "mapping.state." + screenSideString + "." + deckIdx + ".show_phase_meter" }
+  // readonly property bool showPhaseMeter: showPhaseMeterProp.value
+
+
   function resetTitle() {
     myText.x = 0;
     myText.text = trackTitleProp.value;

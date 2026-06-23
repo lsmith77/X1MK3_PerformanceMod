@@ -1032,7 +1032,7 @@ Module
       }
       
       Wire {
-        enabled: customBrowserModeProp.value
+        // enabled: customBrowserModeProp.value
         from: "%surface%.left.fx.buttons.3"
         to: ButtonScriptAdapter {
           color: Color.Turquoise
@@ -1053,7 +1053,7 @@ Module
       }
 
       Wire {
-        enabled: customBrowserModeProp.value
+        // enabled: customBrowserModeProp.value
         from: "%surface%.left.fx.buttons.4"
         to: ButtonScriptAdapter {
           color: Color.Turquoise
