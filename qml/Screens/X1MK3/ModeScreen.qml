@@ -99,7 +99,7 @@ Item {
               left: parent.left
           }
   
-          source:    "Images/" + leftFxIdx + "_A.png"
+          source:    leftFxIdx !== undefined ? ("Images/" + leftFxIdx + "_A.png") : ""
           fillMode:  Image.PreserveAspectFit
       }
   
@@ -109,7 +109,7 @@ Item {
               right: parent.right
           }
   
-          source:    "Images/" + rightFxIdx + "_A.png"
+          source:    rightFxIdx !== undefined ? ("Images/" + rightFxIdx + "_A.png") : ""
           fillMode:  Image.PreserveAspectFit
       }
   
