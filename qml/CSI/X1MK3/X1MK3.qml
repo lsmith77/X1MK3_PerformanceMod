@@ -341,6 +341,18 @@ Mapping
     value: false
   }
   MappingPropertyDescriptor {
+    id: customHotcues5678Prop
+    path: "mapping.settings.custom_hotcues_5678"
+    type: MappingPropertyDescriptor.Boolean
+    value: false
+  }
+  MappingPropertyDescriptor {
+    id: customHotcues5678EnabledProp
+    path: "mapping.state.custom_hotcues_enabled_5678"
+    type: MappingPropertyDescriptor.Boolean
+    value: false
+  }
+  MappingPropertyDescriptor {
     id: customBeatJumpLengthProp
     path: "mapping.settings.custom_beatjump_length"
     type: MappingPropertyDescriptor.Integer

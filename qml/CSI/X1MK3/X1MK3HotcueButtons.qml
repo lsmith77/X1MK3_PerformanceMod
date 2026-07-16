@@ -230,8 +230,8 @@ Module
     enabled: module.active && !(customBrowserModeProp.value && browserModeProp.value)
 
     WiresGroup
-    { 
-      enabled: (deckTypeProp.value == DeckType.Track || deckTypeProp.value == DeckType.Stem) // && module.active 
+    {
+      enabled: ( (deckTypeProp.value == DeckType.Track || deckTypeProp.value == DeckType.Stem) ) && !customHotcues5678Prop.value
 
       // Hotcue buttons 1-2
       WiresGroup
@@ -410,6 +410,66 @@ Module
         Wire { from: "%surface%.hotcues.3"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 6; color: hotcueTypeToLED(hotcue7Type.value) } }
         Wire { from: "%surface%.hotcues.4"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 7; color: hotcueTypeToLED(hotcue8Type.value) } }
       }
+    }
+
+    WiresGroup
+    {
+      enabled: ( (deckTypeProp.value == DeckType.Track || deckTypeProp.value == DeckType.Stem) ) && customHotcues5678Prop.value
+
+      // Hotcue buttons 1-4
+      WiresGroup
+      {
+        enabled: !customHotcues5678EnabledProp.value
+        
+        WiresGroup
+        {
+          enabled: !module.shift
+      
+          Wire { from: "%surface%.hotcues.1"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 0; color: hotcueTypeToLED(hotcue1Type.value) } }
+          Wire { from: "%surface%.hotcues.2"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 1; color: hotcueTypeToLED(hotcue2Type.value) } }
+          Wire { from: "%surface%.hotcues.3"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 2; color: hotcueTypeToLED(hotcue3Type.value) } }
+          Wire { from: "%surface%.hotcues.4"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 3; color: hotcueTypeToLED(hotcue4Type.value) } }
+        }
+
+        WiresGroup
+        {
+          enabled: module.shift
+      
+          Wire { from: "%surface%.hotcues.1"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 0; color: hotcueTypeToLED(hotcue1Type.value) } }
+          Wire { from: "%surface%.hotcues.2"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 1; color: hotcueTypeToLED(hotcue2Type.value) } }
+          Wire { from: "%surface%.hotcues.3"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 2; color: hotcueTypeToLED(hotcue3Type.value) } }
+          Wire { from: "%surface%.hotcues.4"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 3; color: hotcueTypeToLED(hotcue4Type.value) } }
+        }
+      
+      }
+
+      // Hotcue buttons 5-8
+      WiresGroup
+      {
+        enabled: customHotcues5678EnabledProp.value
+        
+        WiresGroup
+        {
+          enabled: !module.shift
+      
+          Wire { from: "%surface%.hotcues.1"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 4; color: hotcueTypeToLED(hotcue5Type.value) } }
+          Wire { from: "%surface%.hotcues.2"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 5; color: hotcueTypeToLED(hotcue6Type.value) } }
+          Wire { from: "%surface%.hotcues.3"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 6; color: hotcueTypeToLED(hotcue7Type.value) } }
+          Wire { from: "%surface%.hotcues.4"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.select_or_set_hotcue"; value: 7; color: hotcueTypeToLED(hotcue8Type.value) } }
+        }
+
+        WiresGroup
+        {
+          enabled: module.shift
+      
+          Wire { from: "%surface%.hotcues.1"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 4; color: hotcueTypeToLED(hotcue5Type.value) } }
+          Wire { from: "%surface%.hotcues.2"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 5; color: hotcueTypeToLED(hotcue6Type.value) } }
+          Wire { from: "%surface%.hotcues.3"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 6; color: hotcueTypeToLED(hotcue7Type.value) } }
+          Wire { from: "%surface%.hotcues.4"; to: HoldPropertyAdapter { path: "app.traktor.decks." + module.deckIdx + ".track.cue.delete_hotcue"; value: 7; color: hotcueTypeToLED(hotcue8Type.value) } }
+        }
+      
+      }
+
     }
 
     WiresGroup

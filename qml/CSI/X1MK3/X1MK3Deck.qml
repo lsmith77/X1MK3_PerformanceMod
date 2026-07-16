@@ -1087,6 +1087,13 @@ Module
     enabled: module.active
 
     Wire { from: SetPropertyAdapter{ path: "app.traktor.decks." + module.deckIdx + ".loop.active"; value: 1; input: false; color: Color.White } to: "%surface%.loop.indicator" }
+  }
+  
+  WiresGroup
+  {
+    enabled: module.active && !customHotcues5678Prop.value
+
+    // Wire { from: SetPropertyAdapter{ path: "app.traktor.decks." + module.deckIdx + ".loop.active"; value: 1; input: false; color: Color.White } to: "%surface%.loop.indicator" }
 
     WiresGroup
     {
@@ -1246,7 +1253,7 @@ Module
 
   WiresGroup
   {
-    enabled: module.active
+    enabled: module.active && !customHotcues5678Prop.value
 
     WiresGroup
     {
@@ -1279,7 +1286,7 @@ Module
 
   WiresGroup
   {
-    enabled: module.active
+    enabled: module.active && !customHotcues5678Prop.value
 
     WiresGroup
     {
@@ -1350,7 +1357,7 @@ Module
 
   WiresGroup
   {
-    enabled: module.active
+    enabled: module.active && !customHotcues5678Prop.value
 
     WiresGroup
     {

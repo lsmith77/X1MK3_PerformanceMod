@@ -39,8 +39,8 @@ Item {
   readonly property variant buttonText16: ["Overmap Modifier", "Block 2nd FX Overlay"]
   readonly property variant buttonText17: ["Cue And Play", "Enc.Step " + encoderTempoStepSize + " BPM"]
   // readonly property variant buttonText17: ["Cue And Play", ""]
-  readonly property variant buttonText18: ["BeatJump L. " + beatJumpLength + " Beats", ""]
-  readonly property variant buttonText19: ["", "Enc.HldStp " + encoderHoldTempoStepSize + " BPM"]
+  readonly property variant buttonText18: ["HotCues Toggle", ""]
+  readonly property variant buttonText19: ["BeatJump L. " + beatJumpLength + " Beats", "Enc.HldStp " + encoderHoldTempoStepSize + " BPM"]
   // readonly property variant buttonText19: ["", ""]
   readonly property variant buttonText20: ["", ""]
   

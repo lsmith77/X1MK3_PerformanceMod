@@ -1032,13 +1032,32 @@ Module
       }
       
       Wire {
-        // enabled: customBrowserModeProp.value
+        from: "%surface%.left.fx.buttons.2"
+        to: ButtonScriptAdapter {
+          color: Color.Red
+          brightness: customHotcues5678Prop.value
+          onPress: {
+            lastTouchedButtonLeftSideProp.value = 18
+            customHotcues5678Prop.value = !customHotcues5678Prop.value
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.left.fx.knobs.2"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonLeftSideProp.value = 18
+          }
+        }
+      }
+      
+      Wire {
         from: "%surface%.left.fx.buttons.3"
         to: ButtonScriptAdapter {
           color: Color.Turquoise
           brightness: (customBeatJumpLengthProp.value > 6) ? 1.0 : 0.0
           onPress: {
-            lastTouchedButtonLeftSideProp.value = 18
+            lastTouchedButtonLeftSideProp.value = 19
             customBeatJumpLengthProp.value = customBeatJumpLengthProp.value - 1
           }
         }
@@ -1047,19 +1066,18 @@ Module
         from: "%surface%.left.fx.knobs.3"
         to: KnobScriptAdapter {
           onTurn: {
-            lastTouchedButtonLeftSideProp.value = 18
+            lastTouchedButtonLeftSideProp.value = 19
           }
         }
       }
 
       Wire {
-        // enabled: customBrowserModeProp.value
         from: "%surface%.left.fx.buttons.4"
         to: ButtonScriptAdapter {
           color: Color.Turquoise
           brightness: (customBeatJumpLengthProp.value < 12) ? 1.0 : 0.0
           onPress: {
-            lastTouchedButtonLeftSideProp.value = 18
+            lastTouchedButtonLeftSideProp.value = 19
             customBeatJumpLengthProp.value = customBeatJumpLengthProp.value + 1
           }
         }
@@ -1068,7 +1086,7 @@ Module
         from: "%surface%.left.fx.knobs.4"
         to: KnobScriptAdapter {
           onTurn: {
-            lastTouchedButtonLeftSideProp.value = 18
+            lastTouchedButtonLeftSideProp.value = 19
           }
         }
       }
