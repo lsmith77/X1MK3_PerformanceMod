@@ -347,12 +347,6 @@ Mapping
     value: false
   }
   MappingPropertyDescriptor {
-    id: customHotcues5678EnabledProp
-    path: "mapping.state.custom_hotcues_enabled_5678"
-    type: MappingPropertyDescriptor.Boolean
-    value: false
-  }
-  MappingPropertyDescriptor {
     id: customBeatJumpLengthProp
     path: "mapping.settings.custom_beatjump_length"
     type: MappingPropertyDescriptor.Integer
@@ -432,51 +426,6 @@ Mapping
     type: MappingPropertyDescriptor.Float
     value: 1.0 // (120 / clockBPMProp.value)
   }
-
-  // AppProperty {
-    // id: cueMonitorChannelProp1;
-    // path: "app.traktor.mixer.channels.1.cue";
-    // onValueChanged: {
-      // if (value && customSingleCueMonitorProp.value) {
-        // cueMonitorChannelProp2.value = false;
-        // cueMonitorChannelProp3.value = false;
-        // cueMonitorChannelProp4.value = false;
-      // }
-    // }
-  // }
-  // AppProperty {
-    // id: cueMonitorChannelProp2;
-    // path: "app.traktor.mixer.channels.2.cue";
-    // onValueChanged: {
-      // if (value && customSingleCueMonitorProp.value) {
-        // cueMonitorChannelProp1.value = false;
-        // cueMonitorChannelProp3.value = false;
-        // cueMonitorChannelProp4.value = false;
-      // }
-    // }
-  // }
-  // AppProperty {
-    // id: cueMonitorChannelProp3;
-    // path: "app.traktor.mixer.channels.3.cue";
-    // onValueChanged: {
-      // if (value && customSingleCueMonitorProp.value) {
-        // cueMonitorChannelProp1.value = false;
-        // cueMonitorChannelProp2.value = false;
-        // cueMonitorChannelProp4.value = false;
-      // }
-    // }
-  // }
-  // AppProperty {
-    // id: cueMonitorChannelProp4;
-    // path: "app.traktor.mixer.channels.4.cue";
-    // onValueChanged: {
-      // if (value && customSingleCueMonitorProp.value) {
-        // cueMonitorChannelProp1.value = false;
-        // cueMonitorChannelProp2.value = false;
-        // cueMonitorChannelProp3.value = false;
-      // }
-    // }
-  // }
 
   MappingPropertyDescriptor { id: customFxUnitDryWetStored1; path: "mapping.settings.custom_fx_unit_dry_wet_stored_1"; type: MappingPropertyDescriptor.Float; value: 0.5 }
   MappingPropertyDescriptor { id: customFxUnitDryWetStored2; path: "mapping.settings.custom_fx_unit_dry_wet_stored_2"; type: MappingPropertyDescriptor.Float; value: 0.5 }
@@ -664,28 +613,17 @@ Mapping
       }
       onRelease: {
         shiftProp.value = false;
-        // if ( (holdShift_countdown.running) && (deviceSetup.state == DeviceSetupState.assigned) ) {
         if ( (holdShift_countdown.running) && customBrowserModeProp.value && (deviceSetup.state == DeviceSetupState.assigned) ) {
           browserModeProp.value = !browserModeProp.value
           previewplayerPlayProp.value = false
-          // previewplayerUnloadProp.value = !previewplayerUnloadProp.value
-          // holdShift_countdown.stop()
         }
       }
     }
   }
   
-  Timer {
-    id: holdShift_countdown;
-    interval: 200
-    // onTriggered: {
-      // if (!browserModeProp.value) previewplayerUnloadProp.value = !previewplayerUnloadProp.value      
-      // if (!customBrowserModeProp.value) previewplayerUnloadProp.value = !previewplayerUnloadProp.value      
-    // }
-  }
+  Timer { id: holdShift_countdown; interval: 200 }
     
   WiresGroup {
-    // enabled: (deviceSetup.state == DeviceSetupState.assigned) && browserModeProp.value 
     enabled: (deviceSetup.state == DeviceSetupState.assigned) && browserModeProp.value && customBrowserModeProp.value
     
     WiresGroup {
@@ -804,9 +742,7 @@ Mapping
   
   AppProperty { id: browserFullScreenProp; path: "app.traktor.browser.full_screen";
     onValueChanged: {
-      // if (maximizeBrowserWhenBrowsingProp.value && (browserModeProp.value != value)) browserModeProp.value = value
       if (maximizeBrowserWhenBrowsingProp.value && customBrowserModeProp.value && (browserModeProp.value != value)) browserModeProp.value = value
-      // previewplayerUnloadProp.value = !previewplayerUnloadProp.value
     }
   }
 
@@ -820,19 +756,16 @@ Mapping
     onSet: {
       fullScreenTimerRunning = true;
       browserFullScreenProp.value = true;
-      // browserModeProp.value = true;
     }
 
     onReset: {
       fullScreenTimerRunning = false;
       browserFullScreenProp.value = false
-      // browserModeProp.value = false
     }
   }
 
   WiresGroup {
     // enabled: (deviceSetup.state == DeviceSetupState.assigned) && maximizeBrowserWhenBrowsingProp.value
-    // enabled: (deviceSetup.state == DeviceSetupState.assigned) && maximizeBrowserWhenBrowsingProp.value && !customBrowserModeProp.value
     enabled: (deviceSetup.state == DeviceSetupState.assigned) && maximizeBrowserWhenBrowsingProp.value && !customBrowserModeProp.value
       && (!alternateEncoderSetupToggleProp.value || (alternateEncoderSetupToggleProp.value && (fxSection.layer == FXSectionLayer.mixer ) ) )
 

@@ -1055,6 +1055,8 @@ Module
     }
   }
   
+  MappingPropertyDescriptor { id: customHotcues5678EnabledProp; path: propertiesPath + "." + deckIdx + ".custom_hotcues_enabled_5678"; type: MappingPropertyDescriptor.Boolean; value: false; }
+
   // Native Modules
   
   Loop { name: "loop";  channel: module.deckIdx }

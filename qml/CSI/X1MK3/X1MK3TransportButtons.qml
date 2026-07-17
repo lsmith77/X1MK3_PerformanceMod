@@ -273,8 +273,18 @@ Module
     // Wire { from: "%surface%.rev";       to: "transport.flux_reverse"    ; enabled: !module.shift }
     // Wire { from: "%surface%.rev";       to: "transport.flux"            ; enabled:  module.shift }
     
-    Wire { from: "%surface%.rev";to: "transport.flux_reverse"; enabled: !module.shift && !module.syncModifier && !customHotcues5678Prop.value }
-    Wire { from: "%surface%.rev";to: TogglePropertyAdapter { path: "mapping.state.custom_hotcues_enabled_5678"; color: Color.Red } enabled: !module.shift && !module.syncModifier && customHotcues5678Prop.value }
+    Wire { from: "%surface%.rev";to: "transport.flux_reverse"; enabled: !module.shift && !module.syncModifier && ( (deckIsLoaded.value && !customHotcues5678Prop.value ) || (deckTypeProp.value == DeckType.Remix) ) }
+    // Wire { from: "%surface%.rev";to: TogglePropertyAdapter { path: propertiesPath + "." + deckIdx + ".custom_hotcues_enabled_5678"; color: Color.Red } enabled: !module.shift && !module.syncModifier && customHotcues5678Prop.value }
+    Wire {
+      enabled: !module.shift && !module.syncModifier && customHotcues5678Prop.value && gridLockAvailable
+      from: "%surface%.rev";to: ButtonScriptAdapter {
+        color: Color.Red
+        brightness: customHotcues5678EnabledProp.value
+        onPress: {
+          customHotcues5678EnabledProp.value = !customHotcues5678EnabledProp.value
+        }
+      }
+    }
     Wire { from: "%surface%.rev";to: "transport.flux"; enabled:  module.shift && !module.syncModifier }
     
     // Wire { from: "%surface%.cue";       to: "transport.cue"             ; enabled: !module.shift }
