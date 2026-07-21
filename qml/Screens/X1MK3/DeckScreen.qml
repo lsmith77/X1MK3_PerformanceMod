@@ -126,12 +126,23 @@ Item {
   AppProperty { id: deckLoadedSignal; path: "app.traktor.decks." + deckIdx + ".is_loaded_signal"; onValueChanged: resetTitle() }
   
   // Pop Up Phase Meter
-  AppProperty { id: tempoPhaseProp;path: "app.traktor.decks." + deckIdx + ".tempo.phase"; }
+  AppProperty { id: tempoPhaseProp; path: "app.traktor.decks." + deckIdx + ".tempo.phase"; }
+  property bool showPhaseMeter: false
   readonly property real tempoPhase: tempoPhaseProp.value
+  onTempoPhaseChanged: {
+    showPhaseMeter = true
+    phaseMeterPopUpTimer.restart()
+  }
   
-  // MappingProperty { id: showPhaseMeterProp; path: "mapping.state." + screenSideString + "." + deckIdx + ".show_phase_meter" }
-  // readonly property bool showPhaseMeter: showPhaseMeterProp.value
+//----------------------------------------------------------------------------------------------------------
 
+  Timer {
+    id: phaseMeterPopUpTimer
+    interval: 2000       
+    repeat: false         
+    running: false       
+    onTriggered: { showPhaseMeter = false }
+  }
 
   function resetTitle() {
     trackTitleText.x = 0;
@@ -141,7 +152,6 @@ Item {
     endTimer1.stop();
     endTimer2.stop();
   }
-//----------------------------------------------------------------------------------------------------------
 
   function computeBarsBeatsFromPosition(beat) {    
     var phraseLen   = Math.pow (2, customBeatCounterPhraseLength) // 8 // 4
@@ -193,6 +203,7 @@ Item {
       Item
       {
         // visible: !showLoopSize && !showBPMInfo
+        // visible: !showLoopSize && !showBPMInfo && !browserModeProp.value
         visible: !showLoopSize && !showBPMInfo && !browserModeProp.value
         anchors.fill: parent
         
@@ -267,57 +278,57 @@ Item {
         // Track title  *** pixel style chop work. thank you buddy. nice and clean.
         
         Timer {
-            id: startTimer
-            interval: 3000       
-            repeat: false         
-            running: false       
-            onTriggered: {
-                if (parent.width < trackTitleText.width) {
-                    scrollTimer.restart();
-                }
+          id: startTimer
+          interval: 3000       
+          repeat: false         
+          running: false       
+          onTriggered: {
+            if (parent.width < trackTitleText.width) {
+              scrollTimer.restart();
             }
+          }
         }
 
         Timer {
-            id: scrollTimer
-            interval: 17
-            running: false
-            repeat: true
-            onTriggered: {
-                --trackTitleText.x;
-                if (trackTitleText.x + trackTitleText.width <= parent.width - 1) {
-                    endTimer1.restart()
-                    scrollTimer.stop()
-                }
+          id: scrollTimer
+          interval: 17
+          running: false
+          repeat: true
+          onTriggered: {
+            --trackTitleText.x;
+            if (trackTitleText.x + trackTitleText.width <= parent.width - 1) {
+              endTimer1.restart()
+              scrollTimer.stop()
             }
+          }
         }
 
         Timer {
-            id: endTimer1
-            interval: 2000       
-            repeat: false         
-            running: false       
-            onTriggered: {
-                trackTitleText.x = 0;
-                // trackTitleText.text = "";
-                endTimer2.restart();
-            }
+          id: endTimer1
+          interval: 2000       
+          repeat: false         
+          running: false       
+          onTriggered: {
+            trackTitleText.x = 0;
+            // trackTitleText.text = "";
+            endTimer2.restart();
+          }
         }
 
         Timer {
-            id: endTimer2
-            interval: 200       
-            repeat: false         
-            running: false       
-            onTriggered: {
-                // trackTitleText.text = trackTitleProp.value;
-                startTimer.restart();
-            }
+          id: endTimer2
+          interval: 200       
+          repeat: false         
+          running: false       
+          onTriggered: {
+            // trackTitleText.text = trackTitleProp.value;
+            startTimer.restart();
+          }
         }
 
         // Widgets.ThickText {
         Widgets.ThinText {
-            visible: !shift && !endTimer2.running
+            visible: !shift && !endTimer2.running && !showPhaseMeter
             x: 0 // goes below zero when scrolling title text
             id: trackTitleText
             text: trackTitleProp.value
@@ -425,7 +436,7 @@ Item {
         Widgets.ThickText {
             // visible: shift && loopShiftAction == beatjump_loop
             // visible: false
-            visible: shift && !customBrowserModeProp.value && (loopShiftAction == beatjump_loop)
+            visible: shift && !customBrowserModeProp.value && (loopShiftAction == beatjump_loop) && !showPhaseMeter
 
             anchors {
                 top: parent.top
@@ -466,7 +477,7 @@ Item {
 
         // Capture Source / Quantization
         Widgets.ThickText {
-            visible: shift && isRemixDeck && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) )
+            visible: shift && isRemixDeck && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) ) && !showPhaseMeter
 
             anchors {
                 top: parent.top
@@ -705,7 +716,7 @@ Item {
       // Phase Meter Overlay
       Item {
         // visible: showLoopSize && !showBPMInfo
-        visible: !browserModeProp.value && showBPMInfo // || showPhaseMeter
+        visible: !browserModeProp.value && ( showBPMInfo || showPhaseMeter )
         anchors.fill: parent
 
         // Phase Meter
