@@ -126,16 +126,16 @@ Item {
   AppProperty { id: deckLoadedSignal; path: "app.traktor.decks." + deckIdx + ".is_loaded_signal"; onValueChanged: resetTitle() }
   
   // Pop Up Phase Meter
-  // AppProperty { id: tempoPhaseProp;path: "app.traktor.decks." + deckIdx + ".tempo.phase"; }
-  // readonly property real tempoPhase: tempoPhaseProp.value
+  AppProperty { id: tempoPhaseProp;path: "app.traktor.decks." + deckIdx + ".tempo.phase"; }
+  readonly property real tempoPhase: tempoPhaseProp.value
   
   // MappingProperty { id: showPhaseMeterProp; path: "mapping.state." + screenSideString + "." + deckIdx + ".show_phase_meter" }
   // readonly property bool showPhaseMeter: showPhaseMeterProp.value
 
 
   function resetTitle() {
-    myText.x = 0;
-    myText.text = trackTitleProp.value;
+    trackTitleText.x = 0;
+    trackTitleText.text = trackTitleProp.value;
     startTimer.restart();
     scrollTimer.stop();
     endTimer1.stop();
@@ -195,12 +195,8 @@ Item {
         // visible: !showLoopSize && !showBPMInfo
         visible: !showLoopSize && !showBPMInfo && !browserModeProp.value
         anchors.fill: parent
-
-        // Track title
-
-/*
-        // pixel style chop work. thank you buddy. nice and clean.
         
+/*
         // Defines the space at the end of the track title (for animation effects)
         property string trackTitleSpace: "    "
 
@@ -268,13 +264,15 @@ Item {
         }
 */
 
+        // Track title  *** pixel style chop work. thank you buddy. nice and clean.
+        
         Timer {
             id: startTimer
             interval: 3000       
             repeat: false         
             running: false       
             onTriggered: {
-                if (parent.width < myText.width) {
+                if (parent.width < trackTitleText.width) {
                     scrollTimer.restart();
                 }
             }
@@ -286,8 +284,8 @@ Item {
             running: false
             repeat: true
             onTriggered: {
-                --myText.x;
-                if (myText.x + myText.width <= parent.width - 1) {
+                --trackTitleText.x;
+                if (trackTitleText.x + trackTitleText.width <= parent.width - 1) {
                     endTimer1.restart()
                     scrollTimer.stop()
                 }
@@ -300,8 +298,8 @@ Item {
             repeat: false         
             running: false       
             onTriggered: {
-                myText.x = 0;
-                // myText.text = "";
+                trackTitleText.x = 0;
+                // trackTitleText.text = "";
                 endTimer2.restart();
             }
         }
@@ -312,7 +310,7 @@ Item {
             repeat: false         
             running: false       
             onTriggered: {
-                // myText.text = trackTitleProp.value;
+                // trackTitleText.text = trackTitleProp.value;
                 startTimer.restart();
             }
         }
@@ -320,9 +318,8 @@ Item {
         // Widgets.ThickText {
         Widgets.ThinText {
             visible: !shift && !endTimer2.running
-            x: 0
-            
-            id: myText
+            x: 0 // goes below zero when scrolling title text
+            id: trackTitleText
             text: trackTitleProp.value
             font.family: "Helvetica"
             font.pixelSize: 12
@@ -705,6 +702,111 @@ Item {
 
       }
 
+      // Phase Meter Overlay
+      Item {
+        // visible: showLoopSize && !showBPMInfo
+        visible: !browserModeProp.value && showBPMInfo // || showPhaseMeter
+        anchors.fill: parent
+
+        // Phase Meter
+        Rectangle {
+          // z: 58
+          color: "black"
+          anchors {
+            top: parent.top
+            left: parent.left
+
+            leftMargin: 0
+            topMargin: 0
+          }
+          border {
+            color: "white"
+            width: 1
+          }
+          width: screen.width
+          height: 6
+
+          // Phase Bar
+          Rectangle {
+            color: "white"
+            anchors {
+              top: parent.top
+              bottom: parent.bottom
+              margins: 1
+            }
+            width: parent.width * Math.abs(tempoPhase)
+            x : tempoPhase < 0 ? parent.width * (0.5 + tempoPhase) : (parent.width/2)
+          }
+
+          // Separator at 0.25
+          Rectangle
+          {
+            color  : "white"
+            height : parent.height
+            width  : 1
+            x : parent.width * 0.25 - 1
+          }
+
+          // center Separator
+          Rectangle
+          {
+            color  : "white"
+            height : parent.height
+            width  : 1
+            x : parent.width * 0.50 - 1
+          }
+
+          // Separator at 0.75
+          Rectangle
+          {
+            color  : "white"
+            height : parent.height
+            width  : 1
+            x : parent.width * 0.75 - 1
+          }
+
+        }
+
+        // Image {
+          // anchors {
+              // top: parent.top
+              // left: parent.left
+              // right: parent.right
+          // }
+
+          // source: "Images/StemMeter.png"
+          // fillMode: Image.Stretch // Image.PreserveAspectFit Image.PreserveAspectCrop Image.Stretch Image.Pad
+          
+          // Rectangle
+          // {
+            // visible: (tempoPhase > 0.5)
+            // anchors {
+                // bottom: parent.bottom
+                // right: parent.right
+                // top: parent.top
+            // }
+
+            // color: "white"
+            // width: Math.min((tempoPhase - 0.5), 0.5) * 41
+          // }
+          
+          // Rectangle
+          // {
+            // visible: (tempoPhase < 0.5)
+            // anchors {
+                // bottom: parent.bottom
+                // left: parent.left
+                // top: parent.top
+            // }
+
+            // color: "white"
+            // width: Math.min((0.5 - tempoPhase), 0.5) * 41
+          // }
+
+        // }
+        
+      }
+
       // Loop Overlay
       Item {
         // visible: showLoopSize && !showBPMInfo
@@ -853,36 +955,36 @@ Item {
       }
     }
 
-      // Preview Player progress
+    // Preview Player progress
+    Rectangle {
+      z: 1
+      color: "black"
+      visible: browserModeProp.value && !(isLeftScreen)
+      anchors {
+        bottom: parent.bottom
+        left: parent.left
+
+        leftMargin: 0
+        bottomMargin: 0
+      }
+      border {
+        color: "white"
+        width: 1
+      }
+      width: screen.width
+      height: 6
+
       Rectangle {
-        z: 1
-        color: "black"
-        visible: browserModeProp.value && !(isLeftScreen)
+        color: "white"
         anchors {
+          top: parent.top
           bottom: parent.bottom
           left: parent.left
-
-          leftMargin: 0
-          bottomMargin: 0
+          margins: 1
         }
-        border {
-          color: "white"
-          width: 1
-        }
-        width: screen.width
-        height: 6
-
-        Rectangle {
-          color: "white"
-          anchors {
-            top: parent.top
-            bottom: parent.bottom
-            left: parent.left
-            margins: 1
-          }
-          width: previewDeckLoadedProp.value ? Math.round(screen.width * previewElapsedTimeProp.value / previewLengthProp.value) : 0
-        }
+        width: previewDeckLoadedProp.value ? Math.round(screen.width * previewElapsedTimeProp.value / previewLengthProp.value) : 0
       }
+    }
       
     // Live Deck
     Item
