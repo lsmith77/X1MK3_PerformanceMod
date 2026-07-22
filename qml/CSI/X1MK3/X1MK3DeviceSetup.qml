@@ -925,10 +925,10 @@ Module
         from: "%surface%.left.fx.buttons.4"
         to: ButtonScriptAdapter {
           color: Color.Plum
-          brightness: customOvermappingEngagedProp.value
+          brightness: customPhaseMeterPopUpProp.value
           onPress: {
             lastTouchedButtonLeftSideProp.value = 16
-            customOvermappingEngagedProp.value = !customOvermappingEngagedProp.value
+            customPhaseMeterPopUpProp.value = !customPhaseMeterPopUpProp.value
           }
         }
       }
@@ -936,7 +936,27 @@ Module
         from: "%surface%.left.fx.knobs.4"
         to: KnobScriptAdapter {
           onTurn: {
-            lastTouchedButtonLeftSideProp.value = 16 //change number and then labels in screen display file
+            lastTouchedButtonLeftSideProp.value = 16
+          }
+        }
+      }
+      
+      Wire {
+        from: "%surface%.right.fx.buttons.1"
+        to: ButtonScriptAdapter {
+          color: Color.Blue
+          brightness: customOvermappingEngagedProp.value
+          onPress: {
+            lastTouchedButtonRightSideProp.value = 13
+            customOvermappingEngagedProp.value = !customOvermappingEngagedProp.value
+          }
+        }
+      }
+      Wire {
+        from: "%surface%.right.fx.knobs.1"
+        to: KnobScriptAdapter {
+          onTurn: {
+            lastTouchedButtonRightSideProp.value = 13
           }
         }
       }

@@ -313,6 +313,12 @@ Mapping
     type: MappingPropertyDescriptor.Boolean
     value: false
   }
+  MappingPropertyDescriptor {
+    id: customPhaseMeterPopUpProp
+    path: "mapping.settings.custom_phase_meter_pop_up"
+    type: MappingPropertyDescriptor.Boolean
+    value: false
+  }
   
   MappingPropertyDescriptor {
     id: customOvermappingEngagedProp
@@ -414,8 +420,12 @@ Mapping
   AppProperty { id: remixPageDeckA; path: "app.traktor.decks.1.remix.page"; }
   AppProperty { id: remixPageDeckB; path: "app.traktor.decks.2.remix.page"; }
   AppProperty { id: alternateEncoderSetupToggleProp; path: "app.traktor.decks.2.remix.players.4.sequencer.steps.14"; }
-  // AppProperty { id: cueBlinkerToggleProp; path: "app.traktor.decks.2.remix.players." + module.deckIdx + ".sequencer.steps.15"; }
-  // AppProperty { id: playBlinkerToggleProp; path: "app.traktor.decks.2.remix.players." + module.deckIdx + ".sequencer.steps.16"; }
+  AppProperty { id: overmappingFx1DeckAProp; path: "app.traktor.decks.2.remix.players.1.sequencer.steps.1"; }
+  AppProperty { id: overmappingFx2DeckAProp; path: "app.traktor.decks.2.remix.players.1.sequencer.steps.2"; }
+  AppProperty { id: overmappingMixerDeckAProp; path: "app.traktor.decks.2.remix.players.1.sequencer.steps.3"; }
+  AppProperty { id: overmappingFx1DeckDProp; path: "app.traktor.decks.2.remix.players.2.sequencer.steps.1"; }
+  AppProperty { id: overmappingFx2DeckDProp; path: "app.traktor.decks.2.remix.players.2.sequencer.steps.2"; }
+  AppProperty { id: overmappingMixerDeckDProp; path: "app.traktor.decks.2.remix.players.2.sequencer.steps.3"; }
   
   // ...
   

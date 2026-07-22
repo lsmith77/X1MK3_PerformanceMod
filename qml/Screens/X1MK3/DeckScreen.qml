@@ -116,8 +116,10 @@ Item {
   property alias customBeatCounterPhraseLength: customBeatCounterPhraseLengthProp.value
 
   MappingProperty { id: browserModeProp; path: "mapping.state.browser_mode" }
+  property alias browserMode: browserModeProp.value
   MappingProperty { id: customBrowserModeProp; path: "mapping.settings.custom_browser_mode" }
-  // AppProperty { id: browserFullScreen; path:"app.traktor.browser.full_screen" }
+  property alias customBrowserMode: customBrowserModeProp.value
+  
   AppProperty { id: previewLengthProp; path: "app.traktor.browser.preview_content.track_length" }
   AppProperty { id: previewElapsedTimeProp; path: "app.traktor.browser.preview_player.elapsed_time"  }
   AppProperty { id: previewDeckLoadedProp; path: "app.traktor.browser.preview_player.is_loaded"  }
@@ -126,12 +128,19 @@ Item {
   AppProperty { id: deckLoadedSignal; path: "app.traktor.decks." + deckIdx + ".is_loaded_signal"; onValueChanged: resetTitle() }
   
   // Pop Up Phase Meter
+  MappingProperty { id: customPhaseMeterPopUpProp; path: "mapping.settings.custom_phase_meter_pop_up" }
+  property alias customPhaseMeterPopUp: customPhaseMeterPopUpProp.value
   AppProperty { id: tempoPhaseProp; path: "app.traktor.decks." + deckIdx + ".tempo.phase"; }
-  property bool showPhaseMeter: false
   readonly property real tempoPhase: tempoPhaseProp.value
-  onTempoPhaseChanged: {
-    showPhaseMeter = true
-    phaseMeterPopUpTimer.restart()
+  readonly property int tempoPhaseCoarse: tempoPhase*500
+  
+  property bool showPhaseMeter: false
+
+  onTempoPhaseCoarseChanged: {
+    if (customPhaseMeterPopUp) {
+      showPhaseMeter = true
+      phaseMeterPopUpTimer.restart()
+    }
   }
   
 //----------------------------------------------------------------------------------------------------------
@@ -203,8 +212,8 @@ Item {
       Item
       {
         // visible: !showLoopSize && !showBPMInfo
-        // visible: !showLoopSize && !showBPMInfo && !browserModeProp.value
-        visible: !showLoopSize && !showBPMInfo && !browserModeProp.value
+        // visible: !showLoopSize && !showBPMInfo && !browserMode
+        visible: !showLoopSize && !showBPMInfo && !browserMode
         anchors.fill: parent
         
 /*
@@ -417,7 +426,7 @@ Item {
 
         // [SHIFT] Remaining time
         Widgets.ThinText {
-            visible: shift && customBeatCounterEngaged && !isRemixDeck && (customBrowserModeProp.value || (!customBrowserModeProp.value && (loopShiftAction == key_adjust) ) )
+            visible: shift && customBeatCounterEngaged && !isRemixDeck && (customBrowserMode || (!customBrowserMode && (loopShiftAction == key_adjust) ) )
 
             anchors {
                 top: parent.top
@@ -436,7 +445,7 @@ Item {
         Widgets.ThickText {
             // visible: shift && loopShiftAction == beatjump_loop
             // visible: false
-            visible: shift && !customBrowserModeProp.value && (loopShiftAction == beatjump_loop) && !showPhaseMeter
+            visible: shift && !customBrowserMode && (loopShiftAction == beatjump_loop) && !showPhaseMeter
 
             anchors {
                 top: parent.top
@@ -452,7 +461,7 @@ Item {
         Rectangle {
           // visible: (deckDisplayMainInfo == loopSizeInfo) || (shift && loopShiftAction == beatjump_loop)
           // visible: (deckDisplayMainInfo == loopSizeInfo)
-          visible: (deckDisplayMainInfo == loopSizeInfo) || ( shift && !customBrowserModeProp.value && (loopShiftAction == beatjump_loop) )
+          visible: (deckDisplayMainInfo == loopSizeInfo) || ( shift && !customBrowserMode && (loopShiftAction == beatjump_loop) )
 
           anchors {
               top: parent.top
@@ -477,7 +486,7 @@ Item {
 
         // Capture Source / Quantization
         Widgets.ThickText {
-            visible: shift && isRemixDeck && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) ) && !showPhaseMeter
+            visible: shift && isRemixDeck && ( ((loopShiftAction == key_adjust) && !customBrowserMode ) || (customBrowserMode && !browserMode) ) && !showPhaseMeter
 
             anchors {
                 top: parent.top
@@ -491,7 +500,7 @@ Item {
 
         // Quantize (small)
         Rectangle {
-          visible: shift && isRemixDeck && !quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) )
+          visible: shift && isRemixDeck && !quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserMode ) || (customBrowserMode && !browserMode) )
 
           color: "black"
           anchors {
@@ -519,7 +528,7 @@ Item {
 
         // Quantize Index (small)
         Rectangle {
-          visible: shift && isRemixDeck && !quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) )
+          visible: shift && isRemixDeck && !quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserMode ) || (customBrowserMode && !browserMode) )
 
           color: remixQuantActive ? "white" : "black"
           anchors {
@@ -546,7 +555,7 @@ Item {
 
         // Capture Source (big)
         Rectangle {
-          visible: shift && isRemixDeck && !quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) )
+          visible: shift && isRemixDeck && !quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserMode ) || (customBrowserMode && !browserMode) )
 
           anchors {
             top: parent.top
@@ -574,7 +583,7 @@ Item {
 
         // Quantize Index (Big)
         Rectangle {
-          visible: shift && isRemixDeck && quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserModeProp.value ) || (customBrowserModeProp.value && !browserModeProp.value) )
+          visible: shift && isRemixDeck && quantizeEngaged && ( ((loopShiftAction == key_adjust) && !customBrowserMode ) || (customBrowserMode && !browserMode) )
 
           anchors {
             top: parent.top
@@ -604,8 +613,8 @@ Item {
         Rectangle {
           // visible: shift && (loopShiftAction == key_adjust)
           // visible: shift
-          // visible: shift && (customBrowserModeProp.value || (!customBrowserModeProp.value && (loopShiftAction == key_adjust) ) )
-          visible: shift && !isRemixDeck && (customBrowserModeProp.value || (!customBrowserModeProp.value && (loopShiftAction == key_adjust) ) )
+          // visible: shift && (customBrowserMode || (!customBrowserMode && (loopShiftAction == key_adjust) ) )
+          visible: shift && !isRemixDeck && (customBrowserMode || (!customBrowserMode && (loopShiftAction == key_adjust) ) )
 
           anchors {
             top: parent.top
@@ -631,8 +640,8 @@ Item {
         Rectangle {
           // visible: shift && (loopShiftAction == key_adjust)
           // visible: shift
-          // visible: shift && (customBrowserModeProp.value || (!customBrowserModeProp.value && (loopShiftAction == key_adjust) ) )
-          visible: shift && !isRemixDeck && (customBrowserModeProp.value || (!customBrowserModeProp.value && (loopShiftAction == key_adjust) ) )
+          // visible: shift && (customBrowserMode || (!customBrowserMode && (loopShiftAction == key_adjust) ) )
+          visible: shift && !isRemixDeck && (customBrowserMode || (!customBrowserMode && (loopShiftAction == key_adjust) ) )
 
           color: "black"
           anchors {
@@ -716,7 +725,7 @@ Item {
       // Phase Meter Overlay
       Item {
         // visible: showLoopSize && !showBPMInfo
-        visible: !browserModeProp.value && ( showBPMInfo || showPhaseMeter )
+        visible: !browserMode && ( showBPMInfo || showPhaseMeter )
         anchors.fill: parent
 
         // Phase Meter
@@ -821,7 +830,7 @@ Item {
       // Loop Overlay
       Item {
         // visible: showLoopSize && !showBPMInfo
-        visible: showLoopSize && !showBPMInfo && !browserModeProp.value
+        visible: showLoopSize && !showBPMInfo && !browserMode
         anchors.fill: parent
 
         // Loop headline
@@ -863,7 +872,7 @@ Item {
       // BPM Overlay
       Item {
         // visible: !showLoopSize && showBPMInfo
-        visible: !showLoopSize && showBPMInfo && !browserModeProp.value
+        visible: !showLoopSize && showBPMInfo && !browserMode
         anchors.fill: parent
 
         // BPM
@@ -892,7 +901,7 @@ Item {
 
       // BrowserMode Overlay
       Item {
-        visible: browserModeProp.value
+        visible: browserMode
         anchors.fill: parent
 
         // Browse Headline
@@ -937,7 +946,7 @@ Item {
       Rectangle {
         z: 1
         color: "black"
-        visible: !browserModeProp.value
+        visible: !browserMode
         anchors {
           bottom: parent.bottom
           left: parent.left
@@ -970,7 +979,7 @@ Item {
     Rectangle {
       z: 1
       color: "black"
-      visible: browserModeProp.value && !(isLeftScreen)
+      visible: browserMode && !(isLeftScreen)
       anchors {
         bottom: parent.bottom
         left: parent.left
