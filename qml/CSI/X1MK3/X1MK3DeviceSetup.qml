@@ -67,24 +67,126 @@ Module
     }
   }
 
+  // function resetOverlayOvermappingOld() {
+    // if (customOvermappingEngagedProp.value) {
+      // if (deviceSetupStateProp.value == DeviceSetupState.unassigned) {
+        // remixPageDeckA.value = 3
+        // remixPageDeckB.value = 3
+      // }
+      // else if (deviceSetupStateProp.value == DeviceSetupState.assigned) {
+        // if (deckAssignmentProp.value == DeviceAssignment.decks_a_b || deckAssignmentProp.value == DeviceAssignment.decks_c_a || deckAssignmentProp.value == DeviceAssignment.decks_a_c) {
+          // remixPageDeckB.value = 3
+          // if (fxSection.layer == FXSectionLayer.fx_primary) remixPageDeckA.value = 0
+          // else if (fxSection.layer == FXSectionLayer.fx_secondary) remixPageDeckA.value = 1
+          // else if (fxSection.layer == FXSectionLayer.mixer) remixPageDeckA.value = 2
+        // }
+        // else {
+          // remixPageDeckA.value = 3
+          // if (fxSection.layer == FXSectionLayer.fx_primary) remixPageDeckB.value = 0
+          // else if (fxSection.layer == FXSectionLayer.fx_secondary) remixPageDeckB.value = 1
+          // else if (fxSection.layer == FXSectionLayer.mixer) remixPageDeckB.value = 2
+        // }
+      // }
+    // }
+  // }
+
+  // function resetOverlayOvermapping() {
+    // if (deviceSetupStateProp.value == DeviceSetupState.unassigned) {
+      // if (customOvermappingNumberOfX1Prop.value > 0) {
+        // overmappingPrimaryDecksFx1Prop.value = false
+        // overmappingPrimaryDecksFx2Prop.value = false
+        // overmappingPrimaryDecksMixerProp.value = false
+        // overmappingSecondaryDecksFx1Prop.value = false
+        // overmappingSecondaryDecksFx2Prop.value = false
+        // overmappingSecondaryDecksMixerProp.value = false
+      // }
+    // }
+    // else if (deviceSetupStateProp.value == DeviceSetupState.assigned) {
+      // if (customOvermappingNumberOfX1Prop.value > 0) {
+        // if (deckAssignmentProp.value == DeviceAssignment.decks_a_b || deckAssignmentProp.value == DeviceAssignment.decks_c_a || deckAssignmentProp.value == DeviceAssignment.decks_a_c) {
+          // if (customOvermappingNumberOfX1Prop.value == 1) {
+            // overmappingSecondaryDecksFx1Prop.value = false
+            // overmappingSecondaryDecksFx2Prop.value = false
+            // overmappingSecondaryDecksMixerProp.value = false
+          // }
+          // if (fxSection.layer == FXSectionLayer.fx_primary) {
+            // overmappingPrimaryDecksFx1Prop.value = true
+            // overmappingPrimaryDecksFx2Prop.value = false
+            // overmappingPrimaryDecksMixerProp.value = false
+          // }
+          // else if (fxSection.layer == FXSectionLayer.fx_secondary) {
+            // overmappingPrimaryDecksFx1Prop.value = false
+            // overmappingPrimaryDecksFx2Prop.value = true
+            // overmappingPrimaryDecksMixerProp.value = false
+          // }
+          // else if (fxSection.layer == FXSectionLayer.mixer) {
+            // overmappingPrimaryDecksFx1Prop.value = false
+            // overmappingPrimaryDecksFx2Prop.value = false
+            // overmappingPrimaryDecksMixerProp.value = true
+          // }
+        // }
+        // else {
+          // if (customOvermappingNumberOfX1Prop.value == 1) {
+            // overmappingPrimaryDecksFx1Prop.value = false
+            // overmappingPrimaryDecksFx2Prop.value = false
+            // overmappingPrimaryDecksMixerProp.value = false
+          // }
+          // if (fxSection.layer == FXSectionLayer.fx_primary) {
+            // overmappingSecondaryDecksFx1Prop.value = true
+            // overmappingSecondaryDecksFx2Prop.value = false
+            // overmappingSecondaryDecksMixerProp.value = false
+          // }
+          // else if (fxSection.layer == FXSectionLayer.fx_secondary) {
+            // overmappingSecondaryDecksFx1Prop.value = false
+            // overmappingSecondaryDecksFx2Prop.value = true
+            // overmappingSecondaryDecksMixerProp.value = false
+          // }
+          // else if (fxSection.layer == FXSectionLayer.mixer) {
+            // overmappingSecondaryDecksFx1Prop.value = false
+            // overmappingSecondaryDecksFx2Prop.value = false
+            // overmappingSecondaryDecksMixerProp.value = true
+          // }
+        // }
+      // }
+    // }
+  // }
+  
   function resetOverlayOvermapping() {
-    if (customOvermappingEngagedProp.value) {
-      if (deviceSetupStateProp.value == DeviceSetupState.unassigned) {
-        remixPageDeckA.value = 3
-        remixPageDeckB.value = 3
+    if (deviceSetupStateProp.value == DeviceSetupState.unassigned) {
+      if (customOvermappingNumberOfX1Prop.value > 0) {
+        overmappingPrimaryDecksLayersProp.value = 0
+        overmappingSecondaryDecksLayersProp.value = 0
       }
-      else if (deviceSetupStateProp.value == DeviceSetupState.assigned) {
+    }
+    else if (deviceSetupStateProp.value == DeviceSetupState.assigned) {
+      if (customOvermappingNumberOfX1Prop.value > 0) {
         if (deckAssignmentProp.value == DeviceAssignment.decks_a_b || deckAssignmentProp.value == DeviceAssignment.decks_c_a || deckAssignmentProp.value == DeviceAssignment.decks_a_c) {
-          remixPageDeckB.value = 3
-          if (fxSection.layer == FXSectionLayer.fx_primary) remixPageDeckA.value = 0
-          else if (fxSection.layer == FXSectionLayer.fx_secondary) remixPageDeckA.value = 1
-          else if (fxSection.layer == FXSectionLayer.mixer) remixPageDeckA.value = 2
+          if (customOvermappingNumberOfX1Prop.value == 1) {
+            overmappingSecondaryDecksLayersProp.value = 0
+          }
+          if (fxSection.layer == FXSectionLayer.fx_primary) {
+            overmappingPrimaryDecksLayersProp.value = 1
+          }
+          else if (fxSection.layer == FXSectionLayer.fx_secondary) {
+            overmappingPrimaryDecksLayersProp.value = 2
+          }
+          else if (fxSection.layer == FXSectionLayer.mixer) {
+            overmappingPrimaryDecksLayersProp.value = 3
+          }
         }
         else {
-          remixPageDeckA.value = 3
-          if (fxSection.layer == FXSectionLayer.fx_primary) remixPageDeckB.value = 0
-          else if (fxSection.layer == FXSectionLayer.fx_secondary) remixPageDeckB.value = 1
-          else if (fxSection.layer == FXSectionLayer.mixer) remixPageDeckB.value = 2
+          if (customOvermappingNumberOfX1Prop.value == 1) {
+            overmappingPrimaryDecksLayersProp.value = 0
+          }
+          if (fxSection.layer == FXSectionLayer.fx_primary) {
+            overmappingSecondaryDecksLayersProp.value = 1
+          }
+          else if (fxSection.layer == FXSectionLayer.fx_secondary) {
+            overmappingSecondaryDecksLayersProp.value = 2
+          }
+          else if (fxSection.layer == FXSectionLayer.mixer) {
+            overmappingSecondaryDecksLayersProp.value = 3
+          }
         }
       }
     }
@@ -945,10 +1047,13 @@ Module
         from: "%surface%.right.fx.buttons.1"
         to: ButtonScriptAdapter {
           color: Color.Blue
-          brightness: customOvermappingEngagedProp.value
+          // brightness: customOvermappingEngagedProp.value
+          brightness: customOvermappingNumberOfX1Prop.value
           onPress: {
             lastTouchedButtonRightSideProp.value = 13
-            customOvermappingEngagedProp.value = !customOvermappingEngagedProp.value
+            // customOvermappingEngagedProp.value = !customOvermappingEngagedProp.value
+            if (customOvermappingNumberOfX1Prop.value < 2) customOvermappingNumberOfX1Prop.value = customOvermappingNumberOfX1Prop.value + 1;
+            else customOvermappingNumberOfX1Prop.value = 0
           }
         }
       }

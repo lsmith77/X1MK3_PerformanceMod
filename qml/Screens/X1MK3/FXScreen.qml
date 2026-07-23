@@ -33,7 +33,7 @@ Item {
   readonly property variant buttonText10: ["Browser Mode", "" + timeBeatCounter]
   readonly property variant buttonText11: ["Load Minim. Browser", "Phrase L. " + phraseLength + " Bar"]
   readonly property variant buttonText12: ["Single Tap: Deck Swtch", ""]
-  readonly property variant buttonText13: ["Single Monitor", "Overmap Modifier"]
+  readonly property variant buttonText13: ["Single Monitor", "Overmap L. " + customOvermappingNumberOfX1String]
   readonly property variant buttonText14: ["Switch Mute/FX", "FX Assignm. Unit Focus"]
   readonly property variant buttonText15: ["Mixer FX Invt. LED", "FX Units Deck-Link"]
   readonly property variant buttonText16: ["Phase Meter", "Block 2nd FX Overlay"]
@@ -66,6 +66,9 @@ Item {
   MappingProperty { id: customEncoderHoldTempoStepSizeProp; path: "mapping.settings.custom_encoder_hold_tempo_step_size" }
   // property string encoderHoldTempoStepSize: customEncoderHoldTempoStepSizeProp.value == 100 ? "1.00" : "1." + customEncoderHoldTempoStepSizeProp.value
   readonly property string encoderHoldTempoStepSize: (customEncoderHoldTempoStepSizeProp.value / 100).toFixed(2).toString()
+  
+  MappingProperty { id: customOvermappingNumberOfX1Prop; path: "mapping.settings.custom_overmapping_number_of_X1" }
+  readonly property string customOvermappingNumberOfX1String: (customOvermappingNumberOfX1Prop.value == 0) ? " OFF" : (customOvermappingNumberOfX1Prop.value == 1) ? " 1 X1" : " 2 X1"
 
   MappingProperty {
     id: customKnobAssignmentEqHigh;
