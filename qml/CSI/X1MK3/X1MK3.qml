@@ -319,23 +319,6 @@ Mapping
     value: false
   }
   
-  // MappingPropertyDescriptor {
-    // id: customOvermappingEngagedProp
-    // path: "mapping.settings.custom_overmapping_engaged"
-    // type: MappingPropertyDescriptor.Boolean
-    // value: false
-    // onValueChanged: {
-      // if (value) {
-        // remixPageDeckA.value = 3
-        // remixPageDeckB.value = 3
-      // }
-      // else {
-        // remixPageDeckA.value = 0
-        // remixPageDeckB.value = 0
-      // }
-    // }
-  // }
-
   MappingPropertyDescriptor {
     id: customOvermappingNumberOfX1Prop
     path: "mapping.settings.custom_overmapping_number_of_X1"
@@ -426,11 +409,9 @@ Mapping
 
   // AppProperty used as toggles and modifier conditions instead of their original functions. Decks A and B cannot be used as Remix Decks when these properties are used.
   
-  // AppProperty { id: remixPageDeckA; path: "app.traktor.decks.1.remix.page"; }
-  // AppProperty { id: remixPageDeckB; path: "app.traktor.decks.2.remix.page"; }
   AppProperty { id: overmappingPrimaryDecksLayersProp; path: "app.traktor.decks.1.remix.page";
     onValueChanged: {
-      if ( (value == 0) && (customOvermappingNumberOfX1Prop.value == 2) && (deviceSetup.state == DeviceSetupState.assigned) && ( (deckAssignmentProp.value == DeviceAssignment.decks_a_b) || (deckAssignmentProp.value == DeviceAssignment.decks_a_c) || (deckAssignmentProp.value == DeviceAssignment.decks_c_a) ) ) {
+      if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && ( (deckAssignmentProp.value == DeviceAssignment.decks_a_b) || (deckAssignmentProp.value == DeviceAssignment.decks_a_c) || (deckAssignmentProp.value == DeviceAssignment.decks_c_a) ) ) {
         if (fxSection.layer == FXSectionLayer.fx_primary) value = 1
         else if (fxSection.layer == FXSectionLayer.fx_secondary) value = 2
         else if (fxSection.layer == FXSectionLayer.mixer) value = 3
@@ -439,44 +420,13 @@ Mapping
   }
   AppProperty { id: overmappingSecondaryDecksLayersProp; path: "app.traktor.decks.2.remix.page";
     onValueChanged: {
-      if ( (value == 0) && (customOvermappingNumberOfX1Prop.value == 2) && (deviceSetup.state == DeviceSetupState.assigned) && ( (deckAssignmentProp.value == DeviceAssignment.decks_b_d) || (deckAssignmentProp.value == DeviceAssignment.decks_c_d) ) ) {
+      if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && ( (deckAssignmentProp.value == DeviceAssignment.decks_b_d) || (deckAssignmentProp.value == DeviceAssignment.decks_c_d) ) ) {
         if (fxSection.layer == FXSectionLayer.fx_primary) value = 1
         else if (fxSection.layer == FXSectionLayer.fx_secondary) value = 2
         else if (fxSection.layer == FXSectionLayer.mixer) value = 3
       }
     }
   }
-  
-  // AppProperty { id: overmappingPrimaryDecksFx1Prop; path: "app.traktor.decks.2.remix.players.1.sequencer.steps.1";
-    // onValueChanged: {
-      // if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && (fxSection.layer == FXSectionLayer.fx_primary) && ( (deckAssignmentProp.value == DeviceAssignment.decks_a_b) || (deckAssignmentProp.value == DeviceAssignment.decks_a_c) || (deckAssignmentProp.value == DeviceAssignment.decks_c_a) ) ) value = 1
-    // }
-  // }
-  // AppProperty { id: overmappingPrimaryDecksFx2Prop; path: "app.traktor.decks.2.remix.players.1.sequencer.steps.2";
-    // onValueChanged: {
-      // if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && (fxSection.layer == FXSectionLayer.fx_secondary) && ( (deckAssignmentProp.value == DeviceAssignment.decks_a_b) || (deckAssignmentProp.value == DeviceAssignment.decks_a_c) || (deckAssignmentProp.value == DeviceAssignment.decks_c_a) ) ) value = 1
-    // }
-  // }
-  // AppProperty { id: overmappingPrimaryDecksMixerProp; path: "app.traktor.decks.2.remix.players.1.sequencer.steps.3";
-    // onValueChanged: {
-      // if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && (fxSection.layer == FXSectionLayer.mixer) && ( (deckAssignmentProp.value == DeviceAssignment.decks_a_b) || (deckAssignmentProp.value == DeviceAssignment.decks_a_c) || (deckAssignmentProp.value == DeviceAssignment.decks_c_a) ) ) value = 1
-    // }
-  // }
-  // AppProperty { id: overmappingSecondaryDecksFx1Prop; path: "app.traktor.decks.2.remix.players.2.sequencer.steps.1";
-    // onValueChanged: {
-      // if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && (fxSection.layer == FXSectionLayer.fx_primary) && ( (deckAssignmentProp.value == DeviceAssignment.decks_b_d) || (deckAssignmentProp.value == DeviceAssignment.decks_c_d) ) ) value = 1
-    // }
-  // }
-  // AppProperty { id: overmappingSecondaryDecksFx2Prop; path: "app.traktor.decks.2.remix.players.2.sequencer.steps.2";
-    // onValueChanged: {
-      // if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && (fxSection.layer == FXSectionLayer.fx_secondary) && ( (deckAssignmentProp.value == DeviceAssignment.decks_b_d) || (deckAssignmentProp.value == DeviceAssignment.decks_c_d) ) ) value = 1
-    // }
-  // }
-  // AppProperty { id: overmappingSecondaryDecksMixerProp; path: "app.traktor.decks.2.remix.players.2.sequencer.steps.3";
-    // onValueChanged: {
-      // if ( (value == 0) && (customOvermappingNumberOfX1Prop.value > 0) && (deviceSetup.state == DeviceSetupState.assigned) && (fxSection.layer == FXSectionLayer.mixer) && ( (deckAssignmentProp.value == DeviceAssignment.decks_b_d) || (deckAssignmentProp.value == DeviceAssignment.decks_c_d) ) ) value = 1
-    // }
-  // }
   
   AppProperty { id: alternateEncoderSetupToggleProp; path: "app.traktor.decks.2.remix.players.4.sequencer.steps.14"; }
   

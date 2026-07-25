@@ -67,90 +67,6 @@ Module
     }
   }
 
-  // function resetOverlayOvermappingOld() {
-    // if (customOvermappingEngagedProp.value) {
-      // if (deviceSetupStateProp.value == DeviceSetupState.unassigned) {
-        // remixPageDeckA.value = 3
-        // remixPageDeckB.value = 3
-      // }
-      // else if (deviceSetupStateProp.value == DeviceSetupState.assigned) {
-        // if (deckAssignmentProp.value == DeviceAssignment.decks_a_b || deckAssignmentProp.value == DeviceAssignment.decks_c_a || deckAssignmentProp.value == DeviceAssignment.decks_a_c) {
-          // remixPageDeckB.value = 3
-          // if (fxSection.layer == FXSectionLayer.fx_primary) remixPageDeckA.value = 0
-          // else if (fxSection.layer == FXSectionLayer.fx_secondary) remixPageDeckA.value = 1
-          // else if (fxSection.layer == FXSectionLayer.mixer) remixPageDeckA.value = 2
-        // }
-        // else {
-          // remixPageDeckA.value = 3
-          // if (fxSection.layer == FXSectionLayer.fx_primary) remixPageDeckB.value = 0
-          // else if (fxSection.layer == FXSectionLayer.fx_secondary) remixPageDeckB.value = 1
-          // else if (fxSection.layer == FXSectionLayer.mixer) remixPageDeckB.value = 2
-        // }
-      // }
-    // }
-  // }
-
-  // function resetOverlayOvermapping() {
-    // if (deviceSetupStateProp.value == DeviceSetupState.unassigned) {
-      // if (customOvermappingNumberOfX1Prop.value > 0) {
-        // overmappingPrimaryDecksFx1Prop.value = false
-        // overmappingPrimaryDecksFx2Prop.value = false
-        // overmappingPrimaryDecksMixerProp.value = false
-        // overmappingSecondaryDecksFx1Prop.value = false
-        // overmappingSecondaryDecksFx2Prop.value = false
-        // overmappingSecondaryDecksMixerProp.value = false
-      // }
-    // }
-    // else if (deviceSetupStateProp.value == DeviceSetupState.assigned) {
-      // if (customOvermappingNumberOfX1Prop.value > 0) {
-        // if (deckAssignmentProp.value == DeviceAssignment.decks_a_b || deckAssignmentProp.value == DeviceAssignment.decks_c_a || deckAssignmentProp.value == DeviceAssignment.decks_a_c) {
-          // if (customOvermappingNumberOfX1Prop.value == 1) {
-            // overmappingSecondaryDecksFx1Prop.value = false
-            // overmappingSecondaryDecksFx2Prop.value = false
-            // overmappingSecondaryDecksMixerProp.value = false
-          // }
-          // if (fxSection.layer == FXSectionLayer.fx_primary) {
-            // overmappingPrimaryDecksFx1Prop.value = true
-            // overmappingPrimaryDecksFx2Prop.value = false
-            // overmappingPrimaryDecksMixerProp.value = false
-          // }
-          // else if (fxSection.layer == FXSectionLayer.fx_secondary) {
-            // overmappingPrimaryDecksFx1Prop.value = false
-            // overmappingPrimaryDecksFx2Prop.value = true
-            // overmappingPrimaryDecksMixerProp.value = false
-          // }
-          // else if (fxSection.layer == FXSectionLayer.mixer) {
-            // overmappingPrimaryDecksFx1Prop.value = false
-            // overmappingPrimaryDecksFx2Prop.value = false
-            // overmappingPrimaryDecksMixerProp.value = true
-          // }
-        // }
-        // else {
-          // if (customOvermappingNumberOfX1Prop.value == 1) {
-            // overmappingPrimaryDecksFx1Prop.value = false
-            // overmappingPrimaryDecksFx2Prop.value = false
-            // overmappingPrimaryDecksMixerProp.value = false
-          // }
-          // if (fxSection.layer == FXSectionLayer.fx_primary) {
-            // overmappingSecondaryDecksFx1Prop.value = true
-            // overmappingSecondaryDecksFx2Prop.value = false
-            // overmappingSecondaryDecksMixerProp.value = false
-          // }
-          // else if (fxSection.layer == FXSectionLayer.fx_secondary) {
-            // overmappingSecondaryDecksFx1Prop.value = false
-            // overmappingSecondaryDecksFx2Prop.value = true
-            // overmappingSecondaryDecksMixerProp.value = false
-          // }
-          // else if (fxSection.layer == FXSectionLayer.mixer) {
-            // overmappingSecondaryDecksFx1Prop.value = false
-            // overmappingSecondaryDecksFx2Prop.value = false
-            // overmappingSecondaryDecksMixerProp.value = true
-          // }
-        // }
-      // }
-    // }
-  // }
-  
   function resetOverlayOvermapping() {
     if (deviceSetupStateProp.value == DeviceSetupState.unassigned) {
       if (customOvermappingNumberOfX1Prop.value > 0) {
@@ -306,18 +222,24 @@ Module
     enabled: module.state == DeviceSetupState.unassigned
 
     Wire { from: "%surface%.left.loop"; to: "deck_selector" }
-    Wire { from: "%surface%.left.loop.push"; to: "complete_device_setup" }
+    // Wire { from: "%surface%.left.loop.push"; to: "complete_device_setup" }
 
     Wire { from: "%surface%.left.browse"; to: "deck_selector" }
-    Wire { from: "%surface%.left.browse.push"; to: "complete_device_setup" }
+    // Wire { from: "%surface%.left.browse.push"; to: "complete_device_setup" }
 
     Wire { from: "%surface%.right.loop"; to: "deck_selector" }
-    Wire { from: "%surface%.right.loop.push"; to: "complete_device_setup" }
+    // Wire { from: "%surface%.right.loop.push"; to: "complete_device_setup" }
 
     Wire { from: "%surface%.right.browse"; to: "deck_selector" }
-    Wire { from: "%surface%.right.browse.push"; to: "complete_device_setup" }
+    // Wire { from: "%surface%.right.browse.push"; to: "complete_device_setup" }
     
     // Wire { from: "%surface%.mode"; to: "complete_device_setup" }
+    Wire {
+      from: Or {
+        inputs: [ "%surface%.left.loop.push", "%surface%.left.browse.push", "%surface%.right.loop.push", "%surface%.right.browse.push" ]
+      }
+      to: ButtonScriptAdapter { onPress: deviceSetupExitTimer.restart() }
+    }
     Wire {
       from: "%surface%.mode"
       to: ButtonScriptAdapter {
