@@ -969,11 +969,9 @@ Module
         from: "%surface%.right.fx.buttons.1"
         to: ButtonScriptAdapter {
           color: Color.Blue
-          // brightness: customOvermappingEngagedProp.value
           brightness: customOvermappingNumberOfX1Prop.value
           onPress: {
             lastTouchedButtonRightSideProp.value = 13
-            // customOvermappingEngagedProp.value = !customOvermappingEngagedProp.value
             if (customOvermappingNumberOfX1Prop.value < 2) customOvermappingNumberOfX1Prop.value = customOvermappingNumberOfX1Prop.value + 1;
             else customOvermappingNumberOfX1Prop.value = 0
           }

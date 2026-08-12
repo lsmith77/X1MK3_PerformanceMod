@@ -593,33 +593,22 @@ Mapping
   AppProperty { id: duplicateToDeck4FromDeck3; path: "app.traktor.decks.4.track.duplicate_deck.3"; }
   
   // Shift
-  property alias shift: shiftProp
-  MappingPropertyDescriptor { id: shiftProp; path: mapping.propertiesPath + ".shift"; type: MappingPropertyDescriptor.Boolean; value: false }
-  // Wire { from: "surface.shift";  to: DirectPropertyAdapter { path: mapping.propertiesPath + ".shift"  } }
-
-  Browser { name: "browser" }
-
-  AppProperty { id: previewplayerUnloadProp; path:"app.traktor.browser.preview_player.unload" }
-  AppProperty { id: previewplayerPlayProp; path:"app.traktor.browser.preview_player.play" }
-  
-  Timer {
-    id: shiftBlinkTimer
-    property bool  blink: false
-    interval: 250 * masterClockTempoMultiplierProp.value
-    repeat: true
-    running: browserModeProp.value
-    onTriggered: {
-      blink = !blink;
-    }
-    onRunningChanged: {
-      blink = running;
-    }
+  MappingPropertyDescriptor {
+    id: shiftProp
+    path: mapping.propertiesPath + ".shift"
+    type: MappingPropertyDescriptor.Boolean
+    value: false
+    // onValueChanged: {
+      // shiftOverlayResetTriggerTimer.restart()
+    // }
   }
+  property alias shift: shiftProp.value
+  // Wire { from: "surface.shift";  to: DirectPropertyAdapter { path: mapping.propertiesPath + ".shift"  } }
 
   Wire {
     from: "surface.shift"
     to: ButtonScriptAdapter {
-      brightness: shiftProp.value || shiftBlinkTimer.blink ? 1.0 : 0.0; 
+      brightness: shift || shiftBlinkTimer.blink ? 1.0 : 0.0; 
       onPress: {
         shiftProp.value = true;
         holdShift_countdown.restart()
@@ -636,26 +625,54 @@ Mapping
   
   Timer { id: holdShift_countdown; interval: 200 }
     
+  // Timer {
+    // id: shiftOverlayResetTriggerTimer
+    // interval: 500
+    // onTriggered: {
+      // overmappingPrimaryDecksLayersProp.value = 0;
+      // overmappingSecondaryDecksLayersProp.value = 0;
+    // }
+  // }
+    
+  Timer {
+    id: shiftBlinkTimer
+    property bool  blink: false
+    interval: 250 * masterClockTempoMultiplierProp.value
+    repeat: true
+    running: browserModeProp.value
+    onTriggered: {
+      blink = !blink;
+    }
+    onRunningChanged: {
+      blink = running;
+    }
+  }
+
+  Browser { name: "browser" }
+
+  AppProperty { id: previewplayerUnloadProp; path:"app.traktor.browser.preview_player.unload" }
+  AppProperty { id: previewplayerPlayProp; path:"app.traktor.browser.preview_player.play" }
+  
   WiresGroup {
     enabled: (deviceSetup.state == DeviceSetupState.assigned) && browserModeProp.value && customBrowserModeProp.value
     
     WiresGroup {
       
-      Wire { enabled: !shiftProp.value; from: "surface.left.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 1; mode: RelativeMode.Stepped } }
-      Wire { enabled: shiftProp.value; from: "surface.left.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 10; mode: RelativeMode.Stepped } }
-      Wire { enabled: !shiftProp.value; from: "surface.right.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 1; mode: RelativeMode.Stepped } }
-      Wire { enabled: shiftProp.value; from: "surface.right.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 10; mode: RelativeMode.Stepped } }
-      Wire { enabled: !shiftProp.value; from: "surface.right.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.preview_player.seek"; step: 0.05; mode: RelativeMode.Stepped } }
-      Wire { enabled: shiftProp.value; from: "surface.right.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.favorites.select"; wrap: true; step: 1; mode: RelativeMode.Stepped } }
+      Wire { enabled: !shift; from: "surface.left.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 1; mode: RelativeMode.Stepped } }
+      Wire { enabled: shift; from: "surface.left.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 10; mode: RelativeMode.Stepped } }
+      Wire { enabled: !shift; from: "surface.right.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 1; mode: RelativeMode.Stepped } }
+      Wire { enabled: shift; from: "surface.right.browse.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.list.select_up_down"; wrap: true; step: 10; mode: RelativeMode.Stepped } }
+      Wire { enabled: !shift; from: "surface.right.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.preview_player.seek"; step: 0.05; mode: RelativeMode.Stepped } }
+      Wire { enabled: shift; from: "surface.right.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.favorites.select"; wrap: true; step: 1; mode: RelativeMode.Stepped } }
         
     }
       
     WiresGroup {
       
       Wire { from: "surface.left.loop"; to: "browser.tree_navigation" }
-      Wire { enabled: shiftProp.value; from: "surface.left.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.tree.select_up_down"; wrap: true; step: 9; mode: RelativeMode.Stepped } }
-      Wire { enabled: !shiftProp.value; from: "surface.right.loop.push"; to: TriggerPropertyAdapter { path:"app.traktor.browser.preview_player.load_or_play" } }
-      Wire { enabled: shiftProp.value; from: "surface.right.loop.push"; to: TriggerPropertyAdapter { path:"app.traktor.browser.preparation.jump_to_list" } }
+      Wire { enabled: shift; from: "surface.left.loop.turn"; to: RelativePropertyAdapter { path: "app.traktor.browser.tree.select_up_down"; wrap: true; step: 9; mode: RelativeMode.Stepped } }
+      Wire { enabled: !shift; from: "surface.right.loop.push"; to: TriggerPropertyAdapter { path:"app.traktor.browser.preview_player.load_or_play" } }
+      Wire { enabled: shift; from: "surface.right.loop.push"; to: TriggerPropertyAdapter { path:"app.traktor.browser.preparation.jump_to_list" } }
         
     }
       
@@ -791,7 +808,7 @@ Mapping
     }
 
     Wire {
-      enabled: shiftProp.value && browseShiftPushActionProp.value == BrowseEncoderAction.browse_expand_tree;
+      enabled: shift && browseShiftPushActionProp.value == BrowseEncoderAction.browse_expand_tree;
       from: Or
       {
         inputs: [ "surface.left.browse.push", "surface.right.browse.push" ]
@@ -800,7 +817,7 @@ Mapping
     }
 
     Wire {
-      enabled: !shiftProp.value && fullScreenTimerRunning && browserModeProp.value;
+      enabled: !shift && fullScreenTimerRunning && browserModeProp.value;
       from: Or
       {
         inputs: [ "surface.left.browse.push", "surface.right.browse.push" ]
