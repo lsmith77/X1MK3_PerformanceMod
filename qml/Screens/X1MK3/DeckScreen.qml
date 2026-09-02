@@ -768,13 +768,13 @@ Item {
           }
 
           // center Separator
-          Rectangle
-          {
-            color  : "white"
-            height : parent.height
-            width  : 1
-            x : parent.width * 0.50 - 1
-          }
+          // Rectangle
+          // {
+            // color  : "white"
+            // height : parent.height
+            // width  : 1
+            // x : parent.width * 0.50 - 1
+          // }
 
           // Separator at 0.75
           Rectangle
