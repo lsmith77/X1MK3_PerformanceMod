@@ -248,7 +248,7 @@ Module
     }
 
     Wire {
-      enabled: previousSyncState.value && !syncProp.value;
+      enabled: previousSyncState.value && !syncProp.value && !module.shift
       from: "%surface%.sync";
       to: ButtonScriptAdapter {
         color: Color.Red;

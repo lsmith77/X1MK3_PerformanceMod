@@ -206,14 +206,14 @@ Module
   MappingPropertyDescriptor { path: module.propertiesPath + ".show_loop_size"; type: MappingPropertyDescriptor.Boolean; value: false }
 
   MappingPropertyDescriptor { id: syncModifierProp; path: module.propertiesPath + ".sync_modifier"; type: MappingPropertyDescriptor.Boolean; value: false }
-  Wire { from: "%surface%.sync";  to: DirectPropertyAdapter { path: module.propertiesPath + ".sync_modifier"; output: false } }
+  Wire { enabled: !module.shift; from: "%surface%.sync";  to: DirectPropertyAdapter { path: module.propertiesPath + ".sync_modifier"; output: false } }
 
   SwitchTimer { name: "show_loop_size_timer"; setTimeout: 0; resetTimeout: 500; ignoreEvents: PinEvent.WireEnabled }
   
   WiresGroup
   {
     // enabled: module.active && !shift && !syncModifierProp.value
-    enabled: module.active && !shift && !syncModifierProp.value && !browserModeProp.value
+    enabled: module.active && !module.shift && !syncModifierProp.value && !browserModeProp.value
 
     Wire { from: "%surface%.loop.is_turned"; to: "show_loop_size_timer.input" }
     Wire { from: "show_loop_size_timer.output.value"; to: ValuePropertyAdapter { path: module.propertiesPath + ".show_loop_size"; output: false } }
