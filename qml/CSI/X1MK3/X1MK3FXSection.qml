@@ -160,6 +160,7 @@ Module
     interval: 500;
     onTriggered: {
       deviceSetup.reset();
+      // browserModeProp.value = false;
     }
   }
 

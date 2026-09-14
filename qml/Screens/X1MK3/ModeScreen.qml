@@ -63,10 +63,14 @@ Item {
     {
       switch(deckIdx)
       {
-        case 1: return "A_" + (deckAPlayProp.value ? "A" : "U") + ".png";
-        case 2: return "B_" + (deckBPlayProp.value ? "A" : "U") + ".png";
-        case 3: return "C_" + (deckCPlayProp.value ? "A" : "U") + ".png";
-        case 4: return "D_" + (deckDPlayProp.value ? "A" : "U") + ".png";
+        // case 1: return "A_" + (deckAPlayProp.value ? "A" : "U") + ".png";
+        // case 2: return "B_" + (deckBPlayProp.value ? "A" : "U") + ".png";
+        // case 3: return "C_" + (deckCPlayProp.value ? "A" : "U") + ".png";
+        // case 4: return "D_" + (deckDPlayProp.value ? "A" : "U") + ".png";
+        case 1: return "A_U.png";
+        case 2: return "B_U.png";
+        case 3: return "C_A.png";
+        case 4: return "D_A.png";
       }
     }
 
@@ -528,7 +532,7 @@ Item {
           // text: "¢"
           // text: "🦋"
           // font.pixelSize: 60
-          text: "C.P.MOD V14 SÛLHEROKHH"
+          text: "C.P.MOD V15 SÛLHEROKHH"
           font.pixelSize: 24
           horizontalAlignment: Text.AlignHCenter
           wrapMode: Text.WordWrap

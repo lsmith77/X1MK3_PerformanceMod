@@ -1080,10 +1080,12 @@ Module
         from: "%surface%.left.fx.buttons.2"
         to: ButtonScriptAdapter {
           color: Color.Red
-          brightness: customHotcues5678Prop.value
+          brightness: (customHotcues5678Prop.value == 0) ? 0.0 : 1.0
           onPress: {
             lastTouchedButtonLeftSideProp.value = 18
-            customHotcues5678Prop.value = !customHotcues5678Prop.value
+            // customHotcues5678Prop.value = !customHotcues5678Prop.value
+            if (customHotcues5678Prop.value < 1) customHotcues5678Prop.value = customHotcues5678Prop.value + 1;
+            else customHotcues5678Prop.value = 0
           }
         }
       }

@@ -231,7 +231,7 @@ Module
 
     WiresGroup
     {
-      enabled: ( (deckTypeProp.value == DeckType.Track || deckTypeProp.value == DeckType.Stem) ) && !customHotcues5678Prop.value
+      enabled: ( (deckTypeProp.value == DeckType.Track || deckTypeProp.value == DeckType.Stem) ) && (customHotcues5678Prop.value == 0)
 
       // Hotcue buttons 1-2
       WiresGroup
@@ -414,7 +414,7 @@ Module
 
     WiresGroup
     {
-      enabled: ( (deckTypeProp.value == DeckType.Track || deckTypeProp.value == DeckType.Stem) ) && customHotcues5678Prop.value
+      enabled: ( (deckTypeProp.value == DeckType.Track || deckTypeProp.value == DeckType.Stem) ) && (customHotcues5678Prop.value == 1)
 
       // Hotcue buttons 1-4
       WiresGroup

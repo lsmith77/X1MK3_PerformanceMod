@@ -697,7 +697,8 @@ Item {
         Rectangle {
           visible: !shift
 
-          color: deckPlayProp.value ? "white" : "black"
+          // color: deckPlayProp.value ? "white" : "black"
+          color: (deckIdx > 2) ? "white" : "black"
           anchors {
             top: parent.top
             right: parent.right
@@ -716,7 +717,8 @@ Item {
               horizontalAlignment: Text.AlignHCenter
 
               text: " " + screen.deckText[deckIdx - 1]
-              color: deckPlayProp.value ? "black" : "white"
+              // color: deckPlayProp.value ? "black" : "white"
+              color: (deckIdx > 2) ? "black" : "white"
           }
         }
 
@@ -979,7 +981,7 @@ Item {
     Rectangle {
       z: 1
       color: "black"
-      visible: browserMode && !(isLeftScreen)
+      visible: (deviceSetupState == DeviceSetupState.assigned) && browserMode && !(isLeftScreen)
       anchors {
         bottom: parent.bottom
         left: parent.left

@@ -340,8 +340,12 @@ Mapping
   MappingPropertyDescriptor {
     id: customHotcues5678Prop
     path: "mapping.settings.custom_hotcues_5678"
-    type: MappingPropertyDescriptor.Boolean
-    value: false
+    // type: MappingPropertyDescriptor.Boolean
+    // value: false
+    type: MappingPropertyDescriptor.Integer
+    value: 0 // off, REV, ARROWS
+    min: 0
+    max: 2
   }
   MappingPropertyDescriptor {
     id: customBeatJumpLengthProp
@@ -608,7 +612,7 @@ Mapping
   Wire {
     from: "surface.shift"
     to: ButtonScriptAdapter {
-      brightness: shift || shiftBlinkTimer.blink ? 1.0 : 0.0; 
+      brightness: shift || ( shiftBlinkTimer.blink && (deviceSetup.state == DeviceSetupState.assigned) ) ? 1.0 : 0.0; 
       onPress: {
         shiftProp.value = true;
         holdShift_countdown.restart()
