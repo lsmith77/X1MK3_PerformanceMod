@@ -1,4 +1,4 @@
-# X1MK3 Performance Mod v12 (Traktor 4.4.1)
+# X1MK3 Performance Mod v14d (Traktor 4.5.1)
 
 **Professional, production-ready X1 customization for Traktor Pro**
 
@@ -10,8 +10,8 @@
 
 A comprehensive, community-driven performance customization for the Traktor X1MK3 controller. Created and maintained as an open-source project.
 
-**Version:** 12  
-**Traktor:** 4.4.1  
+**Version:** 14d  
+**Traktor:** 4.5.1  
 **Status:** Stable & Production-Ready  
 **Creator:** [@Sûlherokhh](https://community.native-instruments.com/profile/S%C3%BClherokhh) (with contributions from [@Stevan](https://community.native-instruments.com/profile/Stevan), [@spinlud](https://community.native-instruments.com/profile/spinlud), [@pixel](https://community.native-instruments.com/profile/pixel), and the community)
 
@@ -28,7 +28,10 @@ A comprehensive, community-driven performance customization for the Traktor X1MK
 ✅ **Transport LED Feedback** - CDJ-style LED colors + CuePoint blinker  
 ✅ **FX Section** - Effect unit assignment + overlay control  
 ✅ **Screen Feedback** - Visual indicators + screen-based feedback  
-✅ **Overmapping Support** - Advanced overlay-based modifier conditions
+✅ **Overmapping Support** - Advanced overlay-based modifier conditions (for 1 or 2 X1s)  
+✅ **Hotcues 5-8** - REV button switches the number buttons to hotcues 5-8 (v14)  
+✅ **Phase Meter** - Shows on the deck screen while holding SYNC, optional pop-up (v14)  
+✅ **Instant Doubles** - Duplicate a deck from Browser Mode (v13)
 
 ---
 
@@ -68,8 +71,9 @@ Core system setup and mode handling:
 
 - Sync [Tap]: Toggle sync on/off
 - Sync [Hold]: Check BPM without toggling
-- Sync+Loop Turn: ±0.01 BPM fine adjustment
-- Sync+Loop Hold+Turn: ±1.00 BPM coarse adjustment
+- Sync+Loop Turn: fine BPM adjustment (step size 0.01-1.00 BPM, set on Setup Page 4)
+- Sync+Loop Hold+Turn: coarse BPM adjustment (step size 0.01-1.00 BPM, set on Setup Page 4)
+- While holding SYNC, the deck screen shows a Phase Meter and the arrow buttons work as pitch bend
 - Sync+Loop Push: Reset tempo to default
 - Global tempo master when AUTO off
 
@@ -90,6 +94,8 @@ Core system setup and mode handling:
 - Phrase Length Display: Optional track phrase length indicator
 - Legacy Encoder Mode: Optional encoder browser behavior (legacy X1 style)
 - Display Customization: Toggle beats display visibility
+- Fixed Beatjump Size: When no loop is active, beatjumps can use a fixed size (1-32 beats) instead of the loop size (Setup Page 4)
+- Hotcues 5-8: With the toggle on (Setup Page 4, L2), the number buttons always play hotcues 1-4, and REV switches them to hotcues 5-8, separately for each deck
 
 ### Navigation & Browser
 
@@ -102,6 +108,7 @@ Core system setup and mode handling:
 - Loop Push: Open/close current folder
 - Loop Double-Tap: Preview player control
 - Optional activation: Shift+MODE to toggle browser mode
+- Instant Doubles: Press a number button (1-4) to pick the source deck, then another to pick the target deck. Careful: a brightly lit button means that deck is playing and will be interrupted.
 
 ### Effect Control
 
@@ -160,23 +167,27 @@ Core system setup and mode handling:
 - **Main Levels:** Center mode displays deck levels + limiter
 - **FX Screens:** Custom toggle names per FX unit
 - **Stem/Remix:** Beat counter, quantization state
-- **Setup:** Configuration status, page indicators
+- **Setup:** Configuration status, page indicators; turning a knob shows that button's setting on the FX screen
+- **Phase Meter:** Replaces the track title while holding SYNC; optionally pops up whenever the phase drifts (Setup Page 3, L4)
 
 ### Advanced Features
 
 **[Custom Overmapping Support](X1_overmapping-support.md)** - Overlay-based modifier conditions
 
-- **Modifier Property:** Page selector switches per overlay
-- **Page 1:** FX Overlay 1 active
-- **Page 2:** FX Overlay 2 active
-- **Page 3:** Mixer Overlay active
-- **Deck-Aware:** Automatically selects Remix Deck A or B based on active decks
-- **Optional Feature:** Enable/disable via Setup Page 3 (R1)
+- **Modifier Property:** Sample Page Selector switches per overlay (changed in v14)
+- **Page 1:** No overlay (or in Setup, or option OFF)
+- **Page 2:** FX Overlay 1 active
+- **Page 3:** FX Overlay 2 active
+- **Page 4:** Mixer Overlay active
+- **Deck-Aware:** Remix Deck A for deck pairs A+B, A+C, C+A; Remix Deck B for C+D, B+D
+- **Setup Page 3 (R1):** OFF, **1** X1 or **2** X1s
+  - **1 X1:** Deck switching resets the unused deck pair to page 1, so each deck pair can have its own commands
+  - **2 X1s:** Both X1s must select this option and use complementary deck pairs (X1 #1: A+B, A+C or C+A; X1 #2: B+D or C+D)
 - **Custom Mapping:** Enables different FX control schemes per overlay
 
 ---
 
-## Setup Customization (3 Pages)
+## Setup Customization (4 Pages)
 
 ### Setup Page 1 - Custom Mixer
 
@@ -199,12 +210,20 @@ Core system setup and mode handling:
 
 - **(L1)** Single Cue Monitor (only one deck at a time)
 - **(L2)** Switch Mute/FX Send in Stem Overlay
-- **(L3)** CueAndPlay (CUP) instead of Cue
-- **(L4)** Invert MixerFX LED (kill-button style)
-- **(R1)** Enable Custom Overmapping Modifier Conditions
+- **(L3)** Invert MixerFX LED (kill-button style)
+- **(L4)** Phase Meter pop-up
+- **(R1)** Custom Overmapping Modifier Conditions: OFF / 1 X1 / 2 X1s
 - **(R2)** FX Assignment buttons focus on FX Units (selects below)
 - **(R3)** Link Active FX Units to Active Decks
 - **(R4)** Block Secondary FX Overlay
+
+### Setup Page 4 - Transport & Tempo
+
+- **(L1)** CueAndPlay (CUP) instead of Cue
+- **(L2)** REV button as Hotcues 5-8 toggle
+- **(L3+L4)** Fixed Beatjump Size: down/up (1-32 beats, or LoopSize as default)
+- **(R1+R2)** BPM step size for Sync+Loop Turn: up/down (0.01-1.00 BPM)
+- **(R3+R4)** BPM step size for Sync+Loop Hold+Turn: up/down (0.01-1.00 BPM)
 
 ---
 
@@ -223,7 +242,7 @@ Core system setup and mode handling:
 ### Hold MODE (1+ second)
 
 - Enter Setup mode
-- Tap MODE to cycle through 3 setup pages
+- Tap MODE to cycle through 4 setup pages
 - Hold any button (L1-R4) to change that setting
 - Shift+Hold any button to change shift-layer setting
 
@@ -411,7 +430,29 @@ If you enjoy this mod, consider supporting the creator:
 
 ## Version History
 
-### v12 (Current)
+Every version, including betas, is on the [Releases](https://github.com/lsmith77/X1MK3_PerformanceMod/releases) page with the original forum post.
+
+### v14d (Current)
+
+- Traktor 4.5.1
+- Hotcues 5-8 toggle on REV, per deck (Setup Page 4, L2)
+- Phase Meter while holding SYNC, plus optional pop-up (Setup Page 3, L4)
+- Custom Modifier for 1 or 2 X1s (Setup Page 3, R1); page designations shifted
+- 14b: Fix for a gamebreaking typo
+- 14c: Phase Meter centre bar removed, so perfect phase is easy to spot
+- 14d: SHIFT+SYNC no longer triggers the SYNC [Hold] functions
+
+### v13
+
+- Traktor 4.5.0
+- Setup expanded to 4 pages (page 4: Transport & Tempo; CueAndPlay moved there)
+- Turning a knob in Setup shows that button's setting on the FX screen
+- Fixed Beatjump Size (1-32 beats or LoopSize)
+- Adjustable BPM step sizes for Sync+Loop Turn and Sync+Loop Hold+Turn
+- Instant Doubles in Browser Mode
+- Dry/Wet setting of FX units in Group mode is remembered
+
+### v12
 
 - Traktor 4.4.1
 - Scrolling Titles
@@ -423,7 +464,6 @@ If you enjoy this mod, consider supporting the creator:
 - Custom Setup pages
 - Screen feedback for all features
 - Overmapping support
-- Stable & Production-Ready
 
 ### v11 & Earlier
 
@@ -510,8 +550,8 @@ These standard X1MK3 hardware features are not customized by the performance mod
 
 ---
 
-**Last Updated:** February 28, 2026  
-**Version:** 12 (Traktor 4.4.1)  
+**Last Updated:** October 8, 2026  
+**Version:** 14d (Traktor 4.5.1)  
 **Status:** Stable & Production-Ready
 
 Enjoy optimized X1 control! 🦋🎧
