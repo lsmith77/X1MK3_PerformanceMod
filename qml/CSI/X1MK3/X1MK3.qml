@@ -232,8 +232,8 @@ Mapping
     type: MappingPropertyDescriptor.Boolean
     value: false
     onValueChanged: {
-      if (fx_section.layer == FXSectionLayer.mixer) {
-        fx_section.layer = FXSectionLayer.fx_primary
+      if (fxSection.layer == FXSectionLayer.mixer) {
+        fxSection.layer = FXSectionLayer.fx_primary
       }
     }
   }
@@ -392,8 +392,8 @@ Mapping
           fxAssignmentProp.value = DeviceAssignment.fx_1_2
         }
         else if (fxAssignmentProp.value != deckAssignmentProp.value) fxAssignmentProp.value = deckAssignmentProp.value
-        if (fx_section.layer == FXSectionLayer.fx_secondary) {
-          fx_section.layer = FXSectionLayer.fx_primary
+        if (fxSection.layer == FXSectionLayer.fx_secondary) {
+          fxSection.layer = FXSectionLayer.fx_primary
         }
       }
     }
@@ -404,8 +404,8 @@ Mapping
     type: MappingPropertyDescriptor.Boolean
     value: false
     onValueChanged: {
-      if (fx_section.layer == FXSectionLayer.fx_secondary) {
-        fx_section.layer = FXSectionLayer.fx_primary
+      if (fxSection.layer == FXSectionLayer.fx_secondary) {
+        fxSection.layer = FXSectionLayer.fx_primary
       }
     }
   }
@@ -469,8 +469,8 @@ Mapping
   function fxModeChanged() {
     if (fxMode.value == FxMode.TwoFxUnits) {
       fxAssignmentProp.value = DeviceAssignment.fx_1_2
-      if (fx_section.layer == FXSectionLayer.fx_secondary) {
-        fx_section.layer = FXSectionLayer.fx_primary
+      if (fxSection.layer == FXSectionLayer.fx_secondary) {
+        fxSection.layer = FXSectionLayer.fx_primary
       }
     }
     else if (customLinkFXOverlayToDeckProp.value) {
